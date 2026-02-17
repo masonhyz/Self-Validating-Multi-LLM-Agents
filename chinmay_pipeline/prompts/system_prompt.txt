@@ -1,0 +1,13 @@
+Your goal is to generate not just the output but also a verification code in python, which takes in the output and verifies whether it satisfies the critical check. 
+
+You must structure your response EXACTLY as follows:
+
+OUTPUT:
+[your solution here]
+
+VERIFIER:
+```python
+def verify(output):
+    # verification logic
+    return (is_valid: bool, message: str, score: float)
+```
