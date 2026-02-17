@@ -1,0 +1,4 @@
+Generate a sequence of length 10 using digits 1-9 
+such that the sum is maximized. You can reuse numbers.
+
+CRITICAL CHECK: sum of adjacent numbers must be odd
