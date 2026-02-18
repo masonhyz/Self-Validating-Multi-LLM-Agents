@@ -1,5 +1,0 @@
-Generate a story. 
-It should be about a bird named Tweet and a boy named Dang. 
-It should be set in Paris. 
-It should have a happy ending. 
-CRITICAL CHECK: it should be less than 250 words long. 
