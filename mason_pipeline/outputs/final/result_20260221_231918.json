@@ -1,0 +1,27 @@
+{
+  "success": false,
+  "timestamp": "2026-02-21T23:19:18.431346",
+  "total_iterations": 0,
+  "case": null,
+  "constraints": [
+    "The number of digit 8 is prime.",
+    "The number of digit 3 is exactly 3× the number of digit 6\\.",
+    "The number of digit 4 is a multiple of 8\\.",
+    "The total number of even digits (0,2,4,6,8) is exactly 400\\.",
+    "The string contains exactly 12 occurrences of the substring 2026 (overlaps not allowed), and no other occurrence of 2026 besides those 12\\.",
+    "The string contains no occurrence of 000\\.",
+    "The string must not start with 0 and must end with an odd digit.",
+    "Every digit has to appear at least 7 times."
+  ],
+  "problem_description": "",
+  "verifier_path": "outputs/verifier.py",
+  "verifier_code": "def verify(output: str):\n    # Check basic structural properties\n    if not (isinstance(output, str) and len(output) == 700):\n        return (False, 0.0, \"Output must be a string of exactly 700 digits\")\n    \n    # Check all characters are digits\n    if not output.isdigit():\n        return (False, 0.0, \"Output must contain only decimal digits (0-9)\")\n    \n    # Check it doesn't start with 0\n    starts_with_zero = output[0] == '0'\n    \n    # Check it ends with an odd digit\n    ends_with_odd = int(output[-1]) % 2 == 1\n    \n    # Count digit frequencies\n    digit_counts = {str(d): 0 for d in range(10)}\n    for char in output:\n        digit_counts[char] += 1\n    \n    # Count occurrences of substring \"2026\" (non-overlapping)\n    count_2026 = 0\n    i = 0\n    while i <= len(output) - 4:\n        if output[i:i+4] == \"2026\":\n            count_2026 += 1\n            i += 4  # Skip to avoid overlapping matches\n        else:\n            i += 1\n    \n    # Check for \"000\"\n    has_000 = \"000\" in output\n    \n    # Count even digits (0,2,4,6,8)\n    even_digits = ['0', '2', '4', '6', '8']\n    even_count = sum(digit_counts[d] for d in even_digits)\n    \n    # Check prime for digit '8'\n    def is_prime(n):\n        if n < 2:\n            return False\n        if n == 2:\n            return True\n        if n % 2 == 0:\n            return False\n        for i in range(3, int(n**0.5) + 1, 2):\n            if n % i == 0:\n                return False\n        return True\n    \n    # Check all constraints\n    constraints = []\n    messages = []\n    \n    # Constraint 1: The number of digit 8 is prime\n    c1 = is_prime(digit_counts['8'])\n    constraints.append(c1)\n    if not c1:\n        messages.append(\"count(8)=\" + str(digit_counts['8']) + \" is not prime\")\n    \n    # Constraint 2: count(3) = 3 * count(6)\n    c2 = digit_counts['3'] == 3 * digit_counts['6']\n    constraints.append(c2)\n    if not c2:\n        messages.append(\"count(3)=\" + str(digit_counts['3']) + \" != 3 * count(6)=\" + str(3 * digit_counts['6']))\n    \n    # Constraint 3: count(4) is multiple of 8\n    c3 = digit_counts['4'] % 8 == 0\n    constraints.append(c3)\n    if not c3:\n        messages.append(\"count(4)=\" + str(digit_counts['4']) + \" is not divisible by 8\")\n    \n    # Constraint 4: total even digits = 400\n    c4 = even_count == 400\n    constraints.append(c4)\n    if not c4:\n        messages.append(\"even count=\" + str(even_count) + \" != 400\")\n    \n    # Constraint 5: exactly 12 occurrences of \"2026\" (non-overlapping)\n    c5 = count_2026 == 12\n    constraints.append(c5)\n    if not c5:\n        messages.append(\"count(2026)=\" + str(count_2026) + \" != 12\")\n    \n    # Constraint 6: no occurrence of \"000\"\n    c6 = not has_000\n    constraints.append(c6)\n    if not c6:\n        messages.append(\"contains '000'\")\n    \n    # Constraint 7: must not start with 0 and must end with odd digit\n    c7 = not starts_with_zero and ends_with_odd\n    constraints.append(c7)\n    if not c7:\n        part7_msg = []\n        if starts_with_zero:\n            part7_msg.append(\"starts with '0'\")\n        if not ends_with_odd:\n            part7_msg.append(\"ends with even digit '\" + output[-1] + \"'\")\n        messages.append(\" ; \".join(part7_msg))\n    \n    # Constraint 8: every digit appears at least 7 times\n    c8 = all(count >= 7 for count in digit_counts.values())\n    constraints.append(c8)\n    if not c8:\n        min_digit = min(digit_counts, key=digit_counts.get)\n        messages.append(\"digit '\" + min_digit + \"' appears only \" + str(digit_counts[min_digit]) + \" times (<7)\")\n    \n    # Calculate score\n    total_constraints = 8\n    satisfied_count = sum(1 for c in constraints if c)\n    score = satisfied_count / total_constraints\n    \n    # Generate final message\n    if all(constraints):\n        message = \"All constraints satisfied\"\n    else:\n        message = \"Failed constraints: \" + \"; \".join(messages)\n    \n    return (all(constraints), score, message)",
+  "final_output": "OUTPUT:  78962348350238087436302026202620262026",
+  "final_result": {
+    "is_valid": false,
+    "message": 0.0,
+    "score": "Output must be a string of exactly 700 digits",
+    "details": {}
+  },
+  "iteration_history": []
+}

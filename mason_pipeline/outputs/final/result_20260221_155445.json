@@ -1,0 +1,99 @@
+{
+  "success": false,
+  "timestamp": "2026-02-21T15:54:45.466089",
+  "total_iterations": 5,
+  "case": {
+    "case_number": 1,
+    "genre": "Number String",
+    "prompt": "Generate a single string of exactly 700 decimal digits (0–9) with all of the following constraints:",
+    "constraints": [
+      "The number of digit 8 is prime.",
+      "The number of digit 3 is exactly 3× the number of digit 6\\.",
+      "The number of digit 4 is a multiple of 8\\.",
+      "The total number of even digits (0,2,4,6,8) is exactly 400\\.",
+      "The string contains exactly 12 occurrences of the substring 2026 (overlaps not allowed), and no other occurrence of 2026 besides those 12\\.",
+      "The string contains no occurrence of 000\\.",
+      "The string must not start with 0 and must end with an odd digit.",
+      "Every digit has to appear at least 7 times."
+    ],
+    "objective": "None",
+    "output_format": "Output only the digit string"
+  },
+  "constraints": [
+    "The number of digit 8 is prime.",
+    "The number of digit 3 is exactly 3× the number of digit 6\\.",
+    "The number of digit 4 is a multiple of 8\\.",
+    "The total number of even digits (0,2,4,6,8) is exactly 400\\.",
+    "The string contains exactly 12 occurrences of the substring 2026 (overlaps not allowed), and no other occurrence of 2026 besides those 12\\.",
+    "The string contains no occurrence of 000\\.",
+    "The string must not start with 0 and must end with an odd digit.",
+    "Every digit has to appear at least 7 times."
+  ],
+  "problem_description": "CASE 1 (Number String)\n\nPROMPT:\nGenerate a single string of exactly 700 decimal digits (0–9) with all of the following constraints:\n\nOBJECTIVE:\nNone\n\nOUTPUT FORMAT REQUIREMENTS:\nOutput only the digit string",
+  "verifier_path": "outputs/verifier.py",
+  "verifier_code": "def verify(output):\n    is_valid, score = validate_constraints(output)\n    return is_valid, score\n\ndef validate_constraints(output): \n    # ... your verification logic here ...\n    return (is_valid, score)",
+  "final_output": "`8234615702724935785600837429452603854109684538713207649320289857` \n```",
+  "final_result": {
+    "is_valid": false,
+    "message": "Verifier error: name 'is_valid' is not defined",
+    "score": 0.0,
+    "details": {}
+  },
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "output": "`8234615702724935785600837429452603854109684538713207649320289857`\n```",
+      "output_length": 70,
+      "validation_result": {
+        "is_valid": false,
+        "message": "Verifier error: name 'is_valid' is not defined",
+        "score": 0.0,
+        "details": {}
+      }
+    },
+    {
+      "iteration": 2,
+      "output": "`8234615702724935785600837429452603854109684538713207649320289857` \n```",
+      "output_length": 71,
+      "validation_result": {
+        "is_valid": false,
+        "message": "Verifier error: name 'is_valid' is not defined",
+        "score": 0.0,
+        "details": {}
+      }
+    },
+    {
+      "iteration": 3,
+      "output": "`8234615702724935785600837429452603854109684538713207649320289857` \n```",
+      "output_length": 71,
+      "validation_result": {
+        "is_valid": false,
+        "message": "Verifier error: name 'is_valid' is not defined",
+        "score": 0.0,
+        "details": {}
+      }
+    },
+    {
+      "iteration": 4,
+      "output": "8234615702724935785600837429452603854109684538713207649320289857 \n```",
+      "output_length": 69,
+      "validation_result": {
+        "is_valid": false,
+        "message": "Verifier error: name 'is_valid' is not defined",
+        "score": 0.0,
+        "details": {}
+      }
+    },
+    {
+      "iteration": 5,
+      "output": "`8234615702724935785600837429452603854109684538713207649320289857` \n```",
+      "output_length": 71,
+      "validation_result": {
+        "is_valid": false,
+        "message": "Verifier error: name 'is_valid' is not defined",
+        "score": 0.0,
+        "details": {}
+      }
+    }
+  ]
+}

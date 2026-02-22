@@ -1,0 +1,24 @@
+{
+  "success": false,
+  "timestamp": "2026-02-21T23:42:28.766461",
+  "total_iterations": 0,
+  "case": null,
+  "constraints": [
+    "The string contains exactly 1 occurrence of the substring 2026.",
+    "The string contains no occurrence of 000.",
+    "The string must not start with 0.",
+    "The string must end with an odd digit.",
+    "The total number of even digits (0,2,4,6,8) is exactly 10."
+  ],
+  "problem_description": "",
+  "verifier_path": "outputs/verifier.py",
+  "verifier_code": "def verify(output: str):\n    # Check all constraints and collect failure messages\n    failures = []\n    \n    # Total constraints: 5\n    # Constraint 1: exactly 20 decimal digits\n    if len(output) != 20:\n        failures.append(\"Length must be exactly 20 digits\")\n    \n    # Constraint 2: contains exactly 1 occurrence of substring \"2026\"\n    count_2026 = output.count(\"2026\")\n    if count_2026 != 1:\n        failures.append(f\"Must contain exactly 1 occurrence of '2026' (found {count_2026})\")\n    \n    # Constraint 3: no occurrence of \"000\"\n    if \"000\" in output:\n        failures.append(\"Must not contain '000'\")\n    \n    # Constraint 4: must not start with '0'\n    if output[0] == '0':\n        failures.append(\"Must not start with '0'\")\n    \n    # Constraint 5: must end with an odd digit\n    odd_digits = {'1', '3', '5', '7', '9'}\n    if output[-1] not in odd_digits:\n        failures.append(f\"Must end with an odd digit (ended with '{output[-1]}')\")\n    \n    # Constraint 6: total number of even digits is exactly 10\n    even_digits = {'0', '2', '4', '6', '8'}\n    even_count = sum(1 for ch in output if ch in even_digits)\n    if even_count != 10:\n        failures.append(f\"Must have exactly 10 even digits (found {even_count})\")\n    \n    # Determine validity and compute score\n    total_constraints = 6\n    satisfied = total_constraints - len(failures)\n    score = satisfied / total_constraints\n    \n    is_valid = len(failures) == 0\n    \n    # Build message\n    if is_valid:\n        message = \"All constraints satisfied\"\n    else:\n        message = \"; \".join(failures)\n    \n    return (is_valid, score, message)",
+  "final_output": "763542206985037026",
+  "final_result": {
+    "is_valid": false,
+    "message": 0.3333333333333333,
+    "score": "Length must be exactly 20 digits; Must contain exactly 1 occurrence of '2026' (found 0); Must end with an odd digit (ended with '6'); Must have exactly 10 even digits (found 11)",
+    "details": {}
+  },
+  "iteration_history": []
+}

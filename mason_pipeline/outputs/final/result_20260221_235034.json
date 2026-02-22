@@ -1,0 +1,24 @@
+{
+  "success": false,
+  "timestamp": "2026-02-21T23:50:34.470207",
+  "total_iterations": 0,
+  "case": null,
+  "constraints": [
+    "The string contains exactly 1 occurrence of the substring 2026.",
+    "The string contains no occurrence of 000.",
+    "The string must not start with 0.",
+    "The string must end with an odd digit.",
+    "The total number of even digits (0,2,4,6,8) is exactly 10."
+  ],
+  "problem_description": "",
+  "verifier_path": "outputs/verifier.py",
+  "verifier_code": "def verify(output: str):\n    # Validate output format: must be a string of exactly 20 decimal digits\n    if len(output) != 20 or not output.isdigit():\n        return (False, 0.0, \"Output must be exactly 20 decimal digits.\")\n    \n    # List all constraints with individual checks\n    # Constraint 1: The string contains exactly 1 occurrence of the substring \"2026\"\n    count_2026 = output.count(\"2026\")\n    constraint1 = (count_2026 == 1)\n    \n    # Constraint 2: The string contains no occurrence of \"000\"\n    constraint2 = (\"000\" not in output)\n    \n    # Constraint 3: The string must not start with 0\n    constraint3 = (output[0] != '0')\n    \n    # Constraint 4: The string must end with an odd digit (1,3,5,7,9)\n    constraint4 = (output[-1] in '13579')\n    \n    # Constraint 5: The total number of even digits (0,2,4,6,8) is exactly 10\n    even_digits = set('02468')\n    even_count = sum(1 for c in output if c in even_digits)\n    constraint5 = (even_count == 10)\n    \n    # Count satisfied constraints\n    constraints_satisfied = sum([constraint1, constraint2, constraint3, constraint4, constraint5])\n    total_constraints = 5\n    score = constraints_satisfied / total_constraints\n    \n    # Build diagnostic message\n    failed_constraints = []\n    if not constraint1:\n        failed_constraints.append(f\"2026 count is {count_2026}, expected exactly 1\")\n    if not constraint2:\n        failed_constraints.append(\"contains '000'\")\n    if not constraint3:\n        failed_constraints.append(\"starts with '0'\")\n    if not constraint4:\n        failed_constraints.append(f\"ends with '{output[-1]}', expected odd digit\")\n    if not constraint5:\n        failed_constraints.append(f\"even digits count is {even_count}, expected exactly 10\")\n    \n    if constraints_satisfied == total_constraints:\n        message = \"All constraints satisfied.\"\n    else:\n        message = \"Failed constraints: \" + \"; \".join(failed_constraints)\n    \n    is_valid = (constraints_satisfied == total_constraints)\n    return (is_valid, score, message)",
+  "final_output": "789354620201987",
+  "final_result": {
+    "is_valid": false,
+    "message": 0.0,
+    "score": "Output must be exactly 20 decimal digits.",
+    "details": {}
+  },
+  "iteration_history": []
+}

@@ -1,0 +1,83 @@
+{
+  "success": false,
+  "timestamp": "2026-02-21T22:47:55.886393",
+  "total_iterations": 5,
+  "case": null,
+  "constraints": [
+    "The number of digit 8 is prime.",
+    "The number of digit 3 is exactly 3× the number of digit 6\\.",
+    "The number of digit 4 is a multiple of 8\\.",
+    "The total number of even digits (0,2,4,6,8) is exactly 400\\.",
+    "The string contains exactly 12 occurrences of the substring 2026 (overlaps not allowed), and no other occurrence of 2026 besides those 12\\.",
+    "The string contains no occurrence of 000\\.",
+    "The string must not start with 0 and must end with an odd digit.",
+    "Every digit has to appear at least 7 times."
+  ],
+  "problem_description": "",
+  "verifier_path": "outputs/verifier.py",
+  "verifier_code": "def verify(output: str):\n    # Input validation: ensure it's a string of exactly 700 digits\n    if not isinstance(output, str):\n        return (False, 0.0, \"Output is not a string.\")\n    if len(output) != 700:\n        return (False, 0.0, f\"Length is {len(output)}, expected 700.\")\n    if not output.isdigit():\n        return (False, 0.0, \"Output contains non-digit characters.\")\n    \n    # Initialize counter for satisfied constraints\n    constraints_satisfied = 0\n    total_constraints = 8\n    failed_constraints = []\n    \n    # Count digit frequencies\n    digit_counts = {str(d): 0 for d in range(10)}\n    for ch in output:\n        digit_counts[ch] += 1\n    \n    # Check constraint 1: number of digit 8 is prime\n    count_8 = digit_counts['8']\n    if count_8 < 2:\n        is_prime_8 = False\n    else:\n        is_prime_8 = all(count_8 % i != 0 for i in range(2, int(count_8**0.5) + 1))\n    if is_prime_8:\n        constraints_satisfied += 1\n    else:\n        failed_constraints.append(\"number of digit 8 is prime\")\n    \n    # Check constraint 2: number of digit 3 is exactly 3× the number of digit 6\n    count_3 = digit_counts['3']\n    count_6 = digit_counts['6']\n    if count_3 == 3 * count_6:\n        constraints_satisfied += 1\n    else:\n        failed_constraints.append(\"number of digit 3 == 3 × number of digit 6\")\n    \n    # Check constraint 3: number of digit 4 is a multiple of 8\n    count_4 = digit_counts['4']\n    if count_4 % 8 == 0:\n        constraints_satisfied += 1\n    else:\n        failed_constraints.append(\"number of digit 4 is a multiple of 8\")\n    \n    # Check constraint 4: total number of even digits (0,2,4,6,8) is exactly 400\n    even_digits = ['0', '2', '4', '6', '8']\n    even_count = sum(digit_counts[d] for d in even_digits)\n    if even_count == 400:\n        constraints_satisfied += 1\n    else:\n        failed_constraints.append(f\"total even digits = {even_count}, expected 400\")\n    \n    # Check constraint 5: exactly 12 occurrences of substring \"2026\", non-overlapping, no others\n    # Count non-overlapping occurrences of \"2026\"\n    count_2026 = 0\n    idx = 0\n    while idx <= len(output) - 4:\n        if output[idx:idx+4] == \"2026\":\n            count_2026 += 1\n            idx += 4  # skip to avoid overlapping matches\n        else:\n            idx += 1\n    \n    # Also check for any additional overlapping occurrences beyond what the non-overlapping counting found?\n    # But the spec says \"overlaps not allowed\" and \"no other occurrence besides those 12\"\n    # So we interpret: total occurrences (including overlapping) must be exactly 12.\n    # However, the phrase \"overlaps not allowed\" likely means that only non-overlapping occurrences count,\n    # but the phrase \"no other occurrence of 2026 besides those 12\" suggests all occurrences (including potential overlapping ones) must be exactly 12.\n    # To be safe, count ALL occurrences (including overlapping ones) and require exactly 12.\n    count_2026_all = 0\n    for i in range(len(output) - 3):\n        if output[i:i+4] == \"2026\":\n            count_2026_all += 1\n    \n    if count_2026_all == 12:\n        constraints_satisfied += 1\n    else:\n        failed_constraints.append(f\"occurrences of '2026' = {count_2026_all}, expected 12\")\n    \n    # Check constraint 6: no occurrence of \"000\"\n    has_000 = \"000\" in output\n    if not has_000:\n        constraints_satisfied += 1\n    else:\n        failed_constraints.append(\"contains '000'\")\n    \n    # Check constraint 7: string does not start with '0' and ends with an odd digit\n    starts_with_zero = output[0] == '0'\n    ends_with_odd = output[-1] in '13579'\n    if not starts_with_zero and ends_with_odd:\n        constraints_satisfied += 1\n    else:\n        reason = []\n        if starts_with_zero:\n            reason.append(\"starts with '0'\")\n        if not ends_with_odd:\n            reason.append(f\"ends with '{output[-1]}' (not odd)\")\n        failed_constraints.append(\" and \".join(reason))\n    \n    # Check constraint 8: every digit appears at least 7 times\n    min_digit_count = min(digit_counts.values())\n    if min_digit_count >= 7:\n        constraints_satisfied += 1\n    else:\n        # find which digits fail\n        failing_digits = [d for d in digit_counts if digit_counts[d] < 7]\n        failed_constraints.append(f\"digit(s) appear < 7 times: {failing_digits}\")\n    \n    # Calculate final score\n    score = constraints_satisfied / total_constraints\n    is_valid = (constraints_satisfied == total_constraints)\n    \n    # Generate message\n    if is_valid:\n        message = \"All constraints satisfied.\"\n    else:\n        message = \"Failed constraints: \" + \"; \".join(failed_constraints)\n    \n    return (is_valid, score, message)",
+  "final_output": "```python\n\"85142648034876279608721030120831021167277169432832067108210121038\"\n```",
+  "final_result": {
+    "is_valid": false,
+    "message": "Second element must be str, got <class 'float'>",
+    "score": 0.0,
+    "details": {}
+  },
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "output": "```python\n\"85142648034876279608721030120831021167277169432832067108210121038\"\n```",
+      "output_length": 81,
+      "validation_result": {
+        "is_valid": false,
+        "message": "Second element must be str, got <class 'float'>",
+        "score": 0.0,
+        "details": {}
+      }
+    },
+    {
+      "iteration": 2,
+      "output": "```python\n\"85142648034876279608721030120831021167277169432832067108210121038\"\n```",
+      "output_length": 81,
+      "validation_result": {
+        "is_valid": false,
+        "message": "Second element must be str, got <class 'float'>",
+        "score": 0.0,
+        "details": {}
+      }
+    },
+    {
+      "iteration": 3,
+      "output": "```python\n\"85142648034876279608721030120831021167277169432832067108210121038\"\n```",
+      "output_length": 81,
+      "validation_result": {
+        "is_valid": false,
+        "message": "Second element must be str, got <class 'float'>",
+        "score": 0.0,
+        "details": {}
+      }
+    },
+    {
+      "iteration": 4,
+      "output": "```python\n\"85142648034876279608721030120831021167277169432832067108210121038\"\n```",
+      "output_length": 81,
+      "validation_result": {
+        "is_valid": false,
+        "message": "Second element must be str, got <class 'float'>",
+        "score": 0.0,
+        "details": {}
+      }
+    },
+    {
+      "iteration": 5,
+      "output": "```python\n\"85142648034876279608721030120831021167277169432832067108210121038\"\n```",
+      "output_length": 81,
+      "validation_result": {
+        "is_valid": false,
+        "message": "Second element must be str, got <class 'float'>",
+        "score": 0.0,
+        "details": {}
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+    "case_number": 1,
+    "genre": "Binary encoding",
+    "prompt": "Generate a single string of exactly 1024 plus or minus signs where:",
+    "constraints": [
+      "The number of plus signs is exactly 513.",
+      "The number of minus signs is exactly 511.",
+      "The number occurrences of +-+ and +++ is more than 50.",
+      "The string contains no occurrence of ------ or ++++++."
+    ],
+    "objective": "None",
+    "output_format": "Output only the plus and minus signs string",
+    "full_content": "Generate a single string of exactly 1024 plus or minus signs where: The number of plus signs is exactly 513; The number of minus signs is exactly 511. The number occurrences of +-+ and +++ is more than 50. The string contains no occurrence of ------ or ++++++. Output only the plus and minus signs string"
+}

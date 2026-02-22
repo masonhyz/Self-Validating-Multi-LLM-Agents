@@ -1,0 +1,24 @@
+{
+  "success": false,
+  "timestamp": "2026-02-21T23:48:39.920528",
+  "total_iterations": 0,
+  "case": null,
+  "constraints": [
+    "The string contains exactly 1 occurrence of the substring 2026.",
+    "The string contains no occurrence of 000.",
+    "The string must not start with 0.",
+    "The string must end with an odd digit.",
+    "The total number of even digits (0,2,4,6,8) is exactly 10."
+  ],
+  "problem_description": "",
+  "verifier_path": "outputs/verifier.py",
+  "verifier_code": "def verify(output: str):\n    # Initialize list to track which constraints are satisfied\n    constraints = []\n    \n    # Constraint 1: The string contains exactly 1 occurrence of the substring 2026.\n    count_2026 = 0\n    try:\n        start_idx = 0\n        while True:\n            idx = output.find(\"2026\", start_idx)\n            if idx == -1:\n                break\n            count_2026 += 1\n            start_idx = idx + 1\n    except:\n        count_2026 = 0\n    constraint1 = (count_2026 == 1)\n    constraints.append(constraint1)\n    \n    # Constraint 2: The string contains no occurrence of 000.\n    constraint2 = (\"000\" not in output)\n    constraints.append(constraint2)\n    \n    # Constraint 3: The string must not start with 0.\n    constraint3 = (len(output) > 0 and output[0] != '0')\n    constraints.append(constraint3)\n    \n    # Constraint 4: The string must end with an odd digit.\n    if len(output) > 0:\n        last_char = output[-1]\n        constraint4 = last_char in '13579'\n    else:\n        constraint4 = False\n    constraints.append(constraint4)\n    \n    # Constraint 5: The total number of even digits (0,2,4,6,8) is exactly 10.\n    even_digits = '02468'\n    count_even = sum(1 for ch in output if ch in even_digits)\n    constraint5 = (count_even == 10)\n    constraints.append(constraint5)\n    \n    # Additional validation: check that the string is exactly 20 digits\n    if len(output) == 20 and all(ch.isdigit() for ch in output):\n        valid_format = True\n    else:\n        valid_format = False\n        # If format is invalid, add to constraints as False\n        # But the problem states: \"Assume the candidate output follows the stated output format\"\n        # So we won't include this in constraint count unless specified, but note it for message\n    \n    # Calculate score: only consider the 5 explicit constraints\n    satisfied_count = sum(constraints)\n    total_constraints = len(constraints)\n    score = satisfied_count / total_constraints if total_constraints > 0 else 0.0\n    \n    # Determine validity: all constraints must be satisfied\n    is_valid = all(constraints)\n    \n    # Build message\n    if is_valid:\n        message = \"All constraints satisfied.\"\n    else:\n        failed = []\n        if not constraint1:\n            failed.append(\"exactly one occurrence of '2026' (found {})\".format(count_2026))\n        if not constraint2:\n            failed.append(\"no occurrence of '000'\")\n        if not constraint3:\n            failed.append(\"not starting with '0'\")\n        if not constraint4:\n            failed.append(\"ending with an odd digit\")\n        if not constraint5:\n            failed.append(\"exactly 10 even digits (found {})\".format(count_even))\n        message = \"Constraints failed: \" + \", \".join(failed)\n    \n    return (is_valid, score, message)",
+  "final_output": "75300191724876450202697",
+  "final_result": {
+    "is_valid": false,
+    "message": 0.8,
+    "score": "Constraints failed: exactly 10 even digits (found 12)",
+    "details": {}
+  },
+  "iteration_history": []
+}

@@ -1,0 +1,83 @@
+{
+  "success": false,
+  "timestamp": "2026-02-21T22:55:23.833985",
+  "total_iterations": 5,
+  "case": null,
+  "constraints": [
+    "The number of digit 8 is prime.",
+    "The number of digit 3 is exactly 3× the number of digit 6\\.",
+    "The number of digit 4 is a multiple of 8\\.",
+    "The total number of even digits (0,2,4,6,8) is exactly 400\\.",
+    "The string contains exactly 12 occurrences of the substring 2026 (overlaps not allowed), and no other occurrence of 2026 besides those 12\\.",
+    "The string contains no occurrence of 000\\.",
+    "The string must not start with 0 and must end with an odd digit.",
+    "Every digit has to appear at least 7 times."
+  ],
+  "problem_description": "",
+  "verifier_path": "outputs/verifier.py",
+  "verifier_code": "def verify(output: str):\n    # Validate basic properties first\n    if not isinstance(output, str):\n        return (False, 0.0, \"Output is not a string\")\n    if len(output) != 700:\n        return (False, 0.0, f\"String length is {len(output)}, expected 700\")\n    \n    # Count digits\n    digit_counts = {str(d): output.count(str(d)) for d in range(10)}\n    \n    # Constraint 1: Number of digit 8 is prime\n    count_8 = digit_counts['8']\n    def is_prime(n):\n        if n < 2:\n            return False\n        if n == 2:\n            return True\n        if n % 2 == 0:\n            return False\n        for i in range(3, int(n**0.5)+1, 2):\n            if n % i == 0:\n                return False\n        return True\n    \n    # Constraint 2: Number of digit 3 is exactly 3× number of digit 6\n    count_3 = digit_counts['3']\n    count_6 = digit_counts['6']\n    constraint2_satisfied = (count_3 == 3 * count_6)\n    \n    # Constraint 3: Number of digit 4 is a multiple of 8\n    count_4 = digit_counts['4']\n    constraint3_satisfied = (count_4 % 8 == 0)\n    \n    # Constraint 4: Total number of even digits (0,2,4,6,8) is exactly 400\n    even_digits = ['0', '2', '4', '6', '8']\n    total_even = sum(digit_counts[d] for d in even_digits)\n    constraint4_satisfied = (total_even == 400)\n    \n    # Constraint 5: Contains exactly 12 occurrences of substring \"2026\" (non-overlapping)\n    # Non-overlapping: find occurrences and count them without overlapping\n    count_2026 = 0\n    start = 0\n    while True:\n        pos = output.find(\"2026\", start)\n        if pos == -1:\n            break\n        count_2026 += 1\n        start = pos + 4  # Move past this occurrence to ensure no overlap\n    \n    constraint5_satisfied = (count_2026 == 12)\n    \n    # Constraint 6: Contains no occurrence of \"000\"\n    has_000 = \"000\" in output\n    constraint6_satisfied = not has_000\n    \n    # Constraint 7: Must not start with 0 and must end with an odd digit\n    starts_with_0 = output.startswith('0')\n    ends_with_odd = int(output[-1]) % 2 == 1 if output else False\n    constraint7_satisfied = (not starts_with_0) and ends_with_odd\n    \n    # Constraint 8: Every digit appears at least 7 times\n    constraint8_satisfied = all(digit_counts[str(d)] >= 7 for d in range(10))\n    \n    # Collect all constraints and their satisfaction status\n    constraints = [\n        (f\"Digit 8 count is prime\", is_prime(count_8)),\n        (f\"Digit 3 count = 3 × digit 6 count ({count_3} == 3×{count_6}={3*count_6})\", constraint2_satisfied),\n        (f\"Digit 4 count is multiple of 8 ({count_4} % 8 == 0)\", constraint3_satisfied),\n        (f\"Total even digits = 400 ({total_even})\", constraint4_satisfied),\n        (f\"Exactly 12 occurrences of '2026' (found {count_2026})\", constraint5_satisfied),\n        (f\"No '000' substring\", constraint6_satisfied),\n        (f\"Does not start with 0 and ends with odd digit (starts={output[0]}, ends={output[-1]})\", constraint7_satisfied),\n        (f\"Every digit appears ≥7 times\", constraint8_satisfied)\n    ]\n    \n    satisfied_count = sum(1 for _, satisfied in constraints if satisfied)\n    total_count = len(constraints)\n    \n    score = satisfied_count / total_count\n    \n    # Generate message\n    failed_constraints = [name for name, satisfied in constraints if not satisfied]\n    if not failed_constraints:\n        message = \"All constraints are satisfied.\"\n    else:\n        message = \"Failed constraints: \" + \", \".join(failed_constraints)\n    \n    is_valid = (satisfied_count == total_count)\n    return (is_valid, score, message)",
+  "final_output": "OUTPUT: 214685202623788908678902146852026237889086789021468520262378890867890214685202623788908678902146852026",
+  "final_result": {
+    "is_valid": false,
+    "message": "Second element must be str, got <class 'float'>",
+    "score": 0.0,
+    "details": {}
+  },
+  "iteration_history": [
+    {
+      "iteration": 1,
+      "output": "21468520262378890867890214685202623788908678902146852026237889086789021468520262378890867890214685202623788908678902146852026",
+      "output_length": 125,
+      "validation_result": {
+        "is_valid": false,
+        "message": "Second element must be str, got <class 'float'>",
+        "score": 0.0,
+        "details": {}
+      }
+    },
+    {
+      "iteration": 2,
+      "output": "OUTPUT: 214685202623788908678902146852026237889086789021468520262378890867890214685202623788908678902146852026",
+      "output_length": 110,
+      "validation_result": {
+        "is_valid": false,
+        "message": "Second element must be str, got <class 'float'>",
+        "score": 0.0,
+        "details": {}
+      }
+    },
+    {
+      "iteration": 3,
+      "output": "OUTPUT: 21468520262378890867890214685202623788908678902146852026237889086789021468520262378890867890214685202623788908678902146852026",
+      "output_length": 133,
+      "validation_result": {
+        "is_valid": false,
+        "message": "Second element must be str, got <class 'float'>",
+        "score": 0.0,
+        "details": {}
+      }
+    },
+    {
+      "iteration": 4,
+      "output": "OUTPUT: 21468520262378890867890214685202623788908678902146852026237889086789021468520262378890867890214685202623788908678902146852026",
+      "output_length": 133,
+      "validation_result": {
+        "is_valid": false,
+        "message": "Second element must be str, got <class 'float'>",
+        "score": 0.0,
+        "details": {}
+      }
+    },
+    {
+      "iteration": 5,
+      "output": "OUTPUT: 214685202623788908678902146852026237889086789021468520262378890867890214685202623788908678902146852026",
+      "output_length": 110,
+      "validation_result": {
+        "is_valid": false,
+        "message": "Second element must be str, got <class 'float'>",
+        "score": 0.0,
+        "details": {}
+      }
+    }
+  ]
+}

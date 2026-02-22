@@ -1,0 +1,27 @@
+{
+  "success": false,
+  "timestamp": "2026-02-21T23:34:56.082350",
+  "total_iterations": 0,
+  "case": null,
+  "constraints": [
+    "The number of digit 8 is prime.",
+    "The number of digit 3 is exactly 3× the number of digit 6\\.",
+    "The number of digit 4 is a multiple of 8\\.",
+    "The total number of even digits (0,2,4,6,8) is exactly 400\\.",
+    "The string contains exactly 12 occurrences of the substring 2026 (overlaps not allowed), and no other occurrence of 2026 besides those 12\\.",
+    "The string contains no occurrence of 000\\.",
+    "The string must not start with 0 and must end with an odd digit.",
+    "Every digit has to appear at least 7 times."
+  ],
+  "problem_description": "",
+  "verifier_path": "outputs/verifier.py",
+  "verifier_code": "def verify(output: str):\n    # Check length\n    if len(output) != 700:\n        return (False, 0.0, f\"String length is {len(output)}, expected 700\")\n    \n    # Count digits\n    digit_counts = {str(d): 0 for d in range(10)}\n    for ch in output:\n        if ch not in '0123456789':\n            return (False, 0.0, f\"Invalid character '{ch}' found\")\n        digit_counts[ch] += 1\n    \n    # Constraint 1: The number of digit 8 is prime.\n    count_8 = digit_counts['8']\n    is_prime = lambda n: n >= 2 and all(n % i != 0 for i in range(2, int(n**0.5) + 1))\n    constraint_1 = is_prime(count_8)\n    \n    # Constraint 2: The number of digit 3 is exactly 3× the number of digit 6.\n    count_3 = digit_counts['3']\n    count_6 = digit_counts['6']\n    constraint_2 = (count_3 == 3 * count_6)\n    \n    # Constraint 3: The number of digit 4 is a multiple of 8.\n    count_4 = digit_counts['4']\n    constraint_3 = (count_4 % 8 == 0)\n    \n    # Constraint 4: The total number of even digits (0,2,4,6,8) is exactly 400.\n    even_digits = ['0', '2', '4', '6', '8']\n    total_even = sum(digit_counts[d] for d in even_digits)\n    constraint_4 = (total_even == 400)\n    \n    # Constraint 5: The string contains exactly 12 occurrences of substring \"2026\" (non-overlapping).\n    # We need to count non-overlapping occurrences of \"2026\"\n    count_2026 = 0\n    i = 0\n    while i <= len(output) - 4:\n        if output[i:i+4] == \"2026\":\n            count_2026 += 1\n            i += 4  # move past this occurrence to avoid overlapping\n        else:\n            i += 1\n    \n    constraint_5 = (count_2026 == 12)\n    \n    # Constraint 6: The string contains no occurrence of \"000\".\n    constraint_6 = (\"000\" not in output)\n    \n    # Constraint 7: The string must not start with 0 and must end with an odd digit.\n    starts_with_zero = (output[0] == '0')\n    ends_with_odd = (output[-1] in '13579')\n    constraint_7 = (not starts_with_zero and ends_with_odd)\n    \n    # Constraint 8: Every digit has to appear at least 7 times.\n    constraint_8 = all(count >= 7 for count in digit_counts.values())\n    \n    # Count satisfied constraints\n    constraints = [\n        constraint_1, constraint_2, constraint_3, constraint_4,\n        constraint_5, constraint_6, constraint_7, constraint_8\n    ]\n    total_constraints = len(constraints)\n    satisfied_count = sum(constraints)\n    score = satisfied_count / total_constraints\n    \n    # Determine validity and build message\n    if all(constraints):\n        return (True, 1.0, \"All constraints satisfied\")\n    \n    failed_constraints = []\n    if not constraint_1:\n        failed_constraints.append(f\"count of '8' ({count_8}) is not prime\")\n    if not constraint_2:\n        failed_constraints.append(f\"count of '3' ({count_3}) != 3 * count of '6' ({count_6})\")\n    if not constraint_3:\n        failed_constraints.append(f\"count of '4' ({count_4}) is not divisible by 8\")\n    if not constraint_4:\n        failed_constraints.append(f\"total even digits ({total_even}) != 400\")\n    if not constraint_5:\n        failed_constraints.append(f\"count of '2026' ({count_2026}) != 12\")\n    if not constraint_6:\n        failed_constraints.append(\"contains '000'\")\n    if not constraint_7:\n        if output[0] == '0' and output[-1] not in '13579':\n            failed_constraints.append(\"starts with '0' and does not end with odd digit\")\n        elif output[0] == '0':\n            failed_constraints.append(\"starts with '0'\")\n        else:\n            failed_constraints.append(f\"does not end with odd digit (ends with '{output[-1]}')\")\n    if not constraint_8:\n        min_digit = min(digit_counts.items(), key=lambda x: x[1])\n        failed_constraints.append(f\"digit '{min_digit[0]}' appears only {min_digit[1]} times (min required: 7)\")\n    \n    message = f\"Failed constraints: {', '.join(failed_constraints)}\"\n    return (False, score, message)",
+  "final_output": "386284570897251200202600202600202600202600202600202600202600202600202600202600202600202600202600",
+  "final_result": {
+    "is_valid": false,
+    "message": 0.0,
+    "score": "String length is 96, expected 700",
+    "details": {}
+  },
+  "iteration_history": []
+}
