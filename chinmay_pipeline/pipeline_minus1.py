@@ -21,12 +21,6 @@ def timeout(duration):
 # Log file path: same directory as this script
 LOG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "pipeline_run.log")
 
-# Short system reminder for story follow-up iterations (2+); full system sent only on iteration 1
-FOLLOWUP_SYSTEM = (
-    "You are revising your story based on verification feedback below. "
-    "Reply with exactly: OUTPUT: on one line, then your complete revised story. No other text or commentary."
-)
-
 class SelfValidatingPipeline:
     def __init__(self, verifier_model="granite4:latest", story_model="gemma3:4b", max_iterations=5, temperature=0.1):
         self.verifier_model = verifier_model
@@ -48,9 +42,6 @@ class SelfValidatingPipeline:
         
         with open("prompts/output_prompt.md", "r") as f:
             self.output_prompt = f.read()
-
-        with open("prompts/critic_prompt.md", "r") as f:
-            self.critic_prompt = f.read()
 
         self._log_file = None
 
@@ -196,33 +187,6 @@ class SelfValidatingPipeline:
         }
         self.iterations.append(data)
 
-    def call_critic(self, previous_output, result):
-        """Ask critic LLM for actionable insights given previous output and verification result."""
-        is_valid, message, score = result[0], result[1], result[2]
-        details = result[3] if len(result) > 3 else {}
-        prev_truncated = previous_output[:4000] + ("..." if len(previous_output) > 4000 else "")
-        user_content = f"""PREVIOUS OUTPUT:
-{prev_truncated}
-
-VERIFICATION RESULT:
-- valid: {is_valid}
-- message: {message}
-- score: {score:.3f}
-- details: {details}
-
-Provide a concise, actionable list of improvements (bullet or numbered). Plain text only, no OUTPUT: prefix."""
-
-        response = ollama.chat(
-            model=self.story_model,
-            messages=[
-                {"role": "system", "content": self.critic_prompt},
-                {"role": "user", "content": user_content}
-            ],
-            options={"temperature": self.temperature}
-        )
-        insights = (response.get("message", {}) or {}).get("content", "").strip()
-        return insights
-
     def generate_verifier(self, problem_data):
         print("=== Phase 1: Generating Verifier ===")
         
@@ -348,35 +312,24 @@ THE VERIFIER FUNCTION THAT WILL CHECK YOUR OUTPUT:
 Your output will be processed as a STRING after removing any markdown code blocks. Make sure your format matches what the verifier expects."""
 
             # User prompt must include both task description and VERIFIABLE CONSTRAINTS (critical for the story LLM)
-            initial_user_content = problem_data["description"]
+            user_content = problem_data["description"]
             if self.constraints:
-                initial_user_content += "\n\n## VERIFIABLE CONSTRAINTS\n" + "\n".join(f"- {c}" for c in self.constraints)
-            full_system_content = enhanced_output_prompt
+                user_content += "\n\n## VERIFIABLE CONSTRAINTS\n" + "\n".join(f"- {c}" for c in self.constraints)
+            self.messages = [
+                {"role": "system", "content": enhanced_output_prompt},
+                {"role": "user", "content": user_content}
+            ]
 
-            last_feedback = None
             for iteration in range(self.max_iterations):
                 print(f"\n--- Iteration {iteration + 1} ---")
                 n = iteration + 1
-
-                # Build payload: full system only on iteration 1; iteration 2+ use short system + task + latest feedback only
-                if iteration == 0:
-                    payload = [
-                        {"role": "system", "content": full_system_content},
-                        {"role": "user", "content": initial_user_content}
-                    ]
-                else:
-                    payload = [
-                        {"role": "system", "content": FOLLOWUP_SYSTEM},
-                        {"role": "user", "content": initial_user_content},
-                        {"role": "user", "content": last_feedback}
-                    ]
-
-                msgs_text = "\n\n".join(f"[{m['role']}]\n{m['content'][:80000]}{'...' if len(m.get('content', '')) > 80000 else ''}" for m in payload)
+                # Prompt to LLM (full messages as sent to ollama.chat)
+                msgs_text = "\n\n".join(f"[{m['role']}]\n{m['content'][:80000]}{'...' if len(m.get('content', '')) > 80000 else ''}" for m in self.messages)
                 self._log_section(f"ITERATION_{n}_PROMPT_TO_LLM", msgs_text)
 
                 response = ollama.chat(
                     model=self.story_model,
-                    messages=payload,
+                    messages=self.messages,
                     options={"temperature": self.temperature}
                 )
                 content = response['message']['content']
@@ -400,6 +353,7 @@ Your output will be processed as a STRING after removing any markdown code block
                     print(f"Details: {details}")
 
                 self.save_iteration(iteration + 1, output, result)
+                self.messages.append({"role": "assistant", "content": content})
 
                 if is_valid:
                     print("\n✓ All constraints satisfied!")
@@ -410,20 +364,31 @@ Your output will be processed as a STRING after removing any markdown code block
                     self.save_final(output, result, success=True)
                     return output, result
 
-                # Critic: (output, verification result) -> actionable insights for story LLM
-                critic_input = (
-                    f"PREVIOUS OUTPUT (first 4000 chars):\n{output[:4000]}{'...' if len(output) > 4000 else ''}\n\n"
-                    f"VERIFICATION RESULT: is_valid={is_valid}, message={message}, score={score}, details={details}"
-                )
-                self._log_section(f"ITERATION_{n}_CRITIC_INPUT", critic_input)
-                insights = self.call_critic(output, result)
-                self._log_section(f"ITERATION_{n}_CRITIC_OUTPUT", insights)
+                # Enhanced feedback with specific metrics
+                output_excerpt = output[:300] + ("..." if len(output) > 300 else "")
 
-                last_feedback = (
-                    f"ACTIONABLE IMPROVEMENTS (from critic):\n{insights}\n\n"
-                    "Apply these improvements and reply with only OUTPUT: followed by your complete revised story."
-                )
-                self._log_section(f"ITERATION_{n}_FEEDBACK_SENT", last_feedback)
+                feedback_parts = [
+                    "VERIFICATION_RESULT:",
+                    f"- Valid: {is_valid}",
+                    f"- Score: {score:.3f}/1.0",
+                    f"- Issues: {message}"
+                ]
+
+                if details:
+                    feedback_parts.append("- Detailed metrics:")
+                    for key, value in details.items():
+                        feedback_parts.append(f"  * {key}: {value}")
+
+                feedback_parts.extend([
+                    "",
+                    f"Your previous output (first 300 chars): '{output_excerpt}'",
+                    "",
+                    "Fix the issues above and provide an improved solution. Respond with only OUTPUT: followed by your solution."
+                ])
+
+                feedback = "\n".join(feedback_parts)
+                self._log_section(f"ITERATION_{n}_FEEDBACK_SENT", feedback)
+                self.messages.append({"role": "user", "content": feedback})
 
             print("\n✗ Max iterations reached without satisfying all constraints")
             final_output = output
@@ -458,7 +423,7 @@ if __name__ == "__main__":
         max_iterations=5,
         temperature=0.7
     )
-    output, result = pipeline.run("prompts/case1.md")
+    output, result = pipeline.run("prompts/story_problem_1.md")
     
     print("\n" + "="*50)
     print("FINAL OUTPUT")

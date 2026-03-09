@@ -10,5 +10,4 @@ Generate a creative story that includes the following narrative elements:
 Create an engaging, complete story that incorporates all these elements naturally into the narrative.
 
 ## VERIFIABLE CONSTRAINTS
-
-- Word count must be less than 250 words
+- Word count must be less than 270 words
