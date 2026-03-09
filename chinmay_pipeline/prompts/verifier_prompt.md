@@ -9,6 +9,7 @@ Generate ONLY a Python function named `verify` that takes a string input and ret
 ```python
 def verify(output):
     # output is a STRING containing the generated solution
+    # do not nest any other functions inside verify function and do not assume any other functions can be called from inside this function
     # Check ONLY the VERIFIABLE CONSTRAINTS from the problem
     # Return tuple: (is_valid: bool, message: str, score: float, details: dict)
     # OR return tuple: (is_valid: bool, message: str, score: float)

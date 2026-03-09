@@ -1,0 +1,12 @@
+# Number String
+Generate a single string of exactly 30 decimal digits (0–9) with all of the following constraints. It needs to have the following verifiable constraints 
+
+## VERIFIABLE CONSTRAINTS 
+- The number of digit 8 is prime.
+- The number of digit 3 is exactly 3× the number of digit 6
+- The number of digit 4 is a multiple of 8
+- The total number of even digits (0,2,4,6,8) is exactly 10
+- The string contains exactly 2 occurrences of the substring 2026 (overlaps not allowed), and no other occurrence of 2026 besides those 12
+- The string contains no occurrence of 000
+- The string must not start with 0 and must end with an odd digit.
+- Every digit has to appear at least 1 times.
