@@ -1,0 +1,16 @@
+{
+    "case_number": 3,
+    "genre": "Story Generation",
+    "prompt": "Generate a story with at least 200 words",
+    "constraints": [
+        "No words should be longer than 10 characters",
+        "The word 'Llama' should appear at least 3 times",
+        "The word 'Python' should appear at least 3 times",
+        "The word 'Llama' should appear at least once before the first occurrence of the word 'Python'",
+        "The word 'Python' should appear at least once after the last occurrence of the word 'Llama'",
+        "There can only be 1 word of character length 8"
+    ],
+    "objective": "None",
+    "output_format": "Output only the story string with no newlines",
+    "full_content": "Case 3: Story Generation  \nGenerate a story with at least 200 words\n\n* No words should be longer than 10 characters  \n* The word 'Llama' should appear at least 3 times  \n* The word 'Python' should appear at least 3 times  \n* The word 'Llama' should appear at least once before the first occurrence of the word 'Python'  \n* The word 'Python' should appear at least once after the last occurrence of the word 'Llama'  \n* There can only be 1 word of character length 8\n\nOutput format: Output only the story string with no newlines"
+}

@@ -1,15 +1,18 @@
 {
-    "case_number": 1,
-    "genre": "Number String",
-    "prompt": "Generate a single string of exactly 20 decimal digits (0–9) with all of the following constraints:",
-    "constraints": [
-      "The string contains exactly 1 occurrence of the substring 2026.",
-      "The string contains no occurrence of 000.",
-      "The string must not start with 0.",
-      "The string must end with an odd digit.",
-      "The total number of even digits (0,2,4,6,8) is exactly 10."
-    ],
-    "objective": "None",
-    "output_format": "Output only the digit string",
-    "full_content": "Case 1: Number String  \nGenerate a single string of exactly 20 decimal digits (0–9) with all of the following constraints:\n\n* The string contains exactly 1 occurrence of the substring 2026.  \n* The string contains no occurrence of 000.  \n* The string must not start with 0.  \n* The string must end with an odd digit.  \n* The total number of even digits (0,2,4,6,8) is exactly 10.\n\nObjective: None  \nOutput format: Output only the digit string"
+  "case_number": 1,
+  "genre": "Number String",
+  "prompt": "Generate a single string of exactly 700 decimal digits (0–9) with all of the following constraints:",
+  "constraints": [
+    "The number of digit 8 is prime.",
+    "The number of digit 3 is exactly 3× the number of digit 6\\.",
+    "The number of digit 4 is a multiple of 8\\.",
+    "The total number of even digits (0,2,4,6,8) is exactly 400\\.",
+    "The string contains exactly 12 occurrences of the substring 2026 (overlaps not allowed), and no other occurrence of 2026 besides those 12\\.",
+    "The string contains no occurrence of 000\\.",
+    "The string must not start with 0 and must end with an odd digit.",
+    "Every digit has to appear at least 7 times."
+  ],
+  "objective": "None",
+  "output_format": "Output only the digit string",
+  "full_content": "Case 1: Number String  \nGenerate a single string of exactly 700 decimal digits (0–9) with all of the following constraints:\n\n* The number of digit 8 is prime.  \n* The number of digit 3 is exactly 3× the number of digit 6\\.  \n* The number of digit 4 is a multiple of 8\\.  \n* The total number of even digits (0,2,4,6,8) is exactly 400\\.  \n* The string contains exactly 12 occurrences of the substring 2026 (overlaps not allowed), and no other occurrence of 2026 besides those 12\\.  \n* The string contains no occurrence of 000\\.  \n* The string must not start with 0 and must end with an odd digit.  \n* Every digit has to appear at least 7 times.\n\nObjective: None  \nOutput format: Output only the digit string"
 }

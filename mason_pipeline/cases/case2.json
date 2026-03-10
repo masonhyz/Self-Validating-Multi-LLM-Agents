@@ -1,0 +1,12 @@
+{
+    "case_number": 2,
+    "genre": "Binary string / coding theory",
+    "prompt": "Generate a length-1024 bitstring with exactly 513 ones",
+    "constraints": [
+      "Hamming weight in every consecutive 64-bit block between 28 and 36",
+      "no occurrence of 000000 or 111111"
+    ],
+    "objective": "minimize the maximum run length.",
+    "output_format": "Output only the digit string with no newlines or spaces",
+    "full_content": "Case 2: Binary string / coding theory  \nGenerate a length-1024 bitstring with exactly 513 ones\n\n* Hamming weight in every consecutive 64-bit block between 28 and 36  \n* no occurrence of 000000 or 111111\n\nObjective: minimize the maximum run length.  \nOutput format: Output only the digit string with no newlines or spaces"
+}
