@@ -9,7 +9,25 @@ from typing import Any, Dict, List, Optional, Tuple
 import json
 from ollama import Client
 
-client = Client()
+_ollama = Client()
+
+try:
+    from openai import OpenAI as _OpenAI
+    _openai = _OpenAI()          # reads OPENAI_API_KEY from env
+except ImportError:
+    _openai = None
+
+_OPENAI_PREFIXES = ("gpt-", "o1", "o3", "o4")
+
+
+def _chat(model: str, messages: List[Dict[str, str]]) -> str:
+    """Send a chat request to OpenAI or Ollama depending on the model name."""
+    if model.startswith(_OPENAI_PREFIXES):
+        if _openai is None:
+            raise RuntimeError("openai package not installed; run: pip install openai")
+        resp = _openai.chat.completions.create(model=model, messages=messages)
+        return resp.choices[0].message.content
+    return _ollama.chat(model, messages=messages)["message"]["content"]
 
 VERIFIER_MODEL = "glm-4.7:cloud"
 CRITIC_MODEL   = "glm-4.7:cloud"
@@ -332,8 +350,7 @@ class SelfValidatingPipeline:
     def _generate_verifier(self, problem_data: Dict[str, Any]) -> str:
         """Ask the verifier model to write a verify() function. Returns the source code."""
         messages = [{"role": "user", "content": VERIFIER_PROMPT + problem_data["full_content"]}]
-        response = client.chat(VERIFIER_MODEL, messages=messages)
-        verifier_code = self._parse_verifier_code(response["message"]["content"])
+        verifier_code = self._parse_verifier_code(_chat(VERIFIER_MODEL, messages))
         if not verifier_code:
             raise RuntimeError("LLM did not return a parseable Python code block")
         return verifier_code
@@ -405,11 +422,10 @@ class SelfValidatingPipeline:
 
         try:
             with timeout(60):
-                response = client.chat(
+                suggestions = _collapse_newlines(_chat(
                     CRITIC_MODEL,
                     messages=[{"role": "user", "content": _collapse_newlines(critic_user)}],
-                )
-            suggestions = _collapse_newlines(response["message"]["content"])
+                ))
         except Exception as e:
             print(f"[critic] LLM call failed ({e}), falling back to formatted feedback")
             return self._format_feedback(output, result)
@@ -458,7 +474,7 @@ class SelfValidatingPipeline:
             lines.append("")
 
         excerpt = output[:500] + ("..." if len(output) > 500 else "")
-        lines.append(f"Your previous output (for reference):\n{excerpt}")
+        # lines.append(f"Your previous output (for reference):\n{excerpt}")
         lines.append("")
         lines.append(
             "Minimally repair your previous answer to fix ONLY the failing constraints above. "
@@ -506,11 +522,10 @@ class SelfValidatingPipeline:
             print("Messages:", json.dumps(self.messages, indent=2, ensure_ascii=False))
             try:
                 with timeout(1000):
-                    response = client.chat(OUTPUT_MODEL, messages=self.messages)
+                    content = _chat(OUTPUT_MODEL, messages=self.messages)
             except TimeoutError:
                 return (None, None)
 
-            content = response["message"]["content"]
             self.messages.append({"role": "assistant", "content": content})
 
             output = self._parse_output(content)
@@ -545,9 +560,9 @@ class SelfValidatingPipeline:
 if __name__ == "__main__":
     pipeline = SelfValidatingPipeline(
         max_iterations=5,
-        reuse_verifier=False,
+        reuse_verifier=True,
     )
-    output, result = pipeline.run("cases/easy_case.json")
+    output, result = pipeline.run("cases/case3.json")
 
     print("\n" + "=" * 50)
     print("FINAL OUTPUT")
