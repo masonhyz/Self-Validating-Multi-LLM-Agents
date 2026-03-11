@@ -1,592 +1,191 @@
 {
-  "cases": [
-    {
-      "case_number": 1,
-      "genre": "Number String",
-      "prompt": "Generate a single string of exactly 700 decimal digits (0–9) with all of the following constraints:",
-      "constraints": [
-        "The number of digit 8 is prime.",
-        "The number of digit 3 is exactly 3× the number of digit 6\\.",
-        "The number of digit 4 is a multiple of 8\\.",
-        "The total number of even digits (0,2,4,6,8) is exactly 400\\.",
-        "The string contains exactly 12 occurrences of the substring 2026 (overlaps not allowed), and no other occurrence of 2026 besides those 12\\.",
-        "The string contains no occurrence of 000\\.",
-        "The string must not start with 0 and must end with an odd digit.",
-        "Every digit has to appear at least 7 times."
-      ],
-      "objective": "None",
-      "output_format": "Output only the digit string",
-      "full_content": "Case 1: Number String  \nGenerate a single string of exactly 700 decimal digits (0–9) with all of the following constraints:\n\n* The number of digit 8 is prime.  \n* The number of digit 3 is exactly 3× the number of digit 6\\.  \n* The number of digit 4 is a multiple of 8\\.  \n* The total number of even digits (0,2,4,6,8) is exactly 400\\.  \n* The string contains exactly 12 occurrences of the substring 2026 (overlaps not allowed), and no other occurrence of 2026 besides those 12\\.  \n* The string contains no occurrence of 000\\.  \n* The string must not start with 0 and must end with an odd digit.  \n* Every digit has to appear at least 7 times.\n\nObjective: None  \nOutput format: Output only the digit string"
-    },
-    {
-      "case_number": 2,
-      "genre": "Binary string / coding theory",
-      "prompt": "Generate a length-1024 bitstring with exactly 513 ones",
-      "constraints": [
-        "Hamming weight in every consecutive 64-bit block between 28 and 36",
-        "no occurrence of 000000 or 111111"
-      ],
-      "objective": "minimize the maximum run length.",
-      "output_format": "Output only the digit string with no newlines or spaces",
-      "full_content": "Case 2: Binary string / coding theory  \nGenerate a length-1024 bitstring with exactly 513 ones\n\n* Hamming weight in every consecutive 64-bit block between 28 and 36  \n* no occurrence of 000000 or 111111\n\nObjective: minimize the maximum run length.  \nOutput format: Output only the digit string with no newlines or spaces"
-    },
-    {
-      "case_number": 3,
-      "genre": "DNA sequence (bioinformatics)",
-      "prompt": "Generate a 1000-nt DNA sequence (A/C/G/T) with",
-      "constraints": [
-        "GC content exactly 52%",
-        "exactly 20 occurrences of the motif ACGTG (non-overlapping)",
-        "no restriction enzyme site GAATTC, and"
-      ],
-      "objective": "minimize the maximum homopolymer run (no more than 3 identical bases in a row if possible).",
-      "output_format": "Output only the string of characters",
-      "full_content": "Case 3: DNA sequence (bioinformatics)  \nGenerate a 1000-nt DNA sequence (A/C/G/T) with \n\n* GC content exactly 52%  \n* exactly 20 occurrences of the motif ACGTG (non-overlapping)  \n* no restriction enzyme site GAATTC, and \n\nObjective: minimize the maximum homopolymer run (no more than 3 identical bases in a row if possible).  \nOutput format: Output only the string of characters"
-    },
-    {
-      "case_number": 4,
-      "genre": "Text / constrained writing (lipogram \\+ counts)",
-      "prompt": "Write a 250-word paragraph with:",
-      "constraints": [
-        "exactly 12 sentences",
-        "exactly 40 words starting with a vowel",
-        "no letter “e”",
-        "include the bigram “th” exactly 15 times"
-      ],
-      "objective": "and minimize repeated words (no word used more than twice).",
-      "output_format": "Output only the paragraph with no new lines.",
-      "full_content": "Case 4: Text / constrained writing (lipogram \\+ counts)  \nWrite a 250-word paragraph with:\n\n* exactly 12 sentences  \n* exactly 40 words starting with a vowel  \n* no letter “e”  \n* include the bigram “th” exactly 15 times\n\nObjective: and minimize repeated words (no word used more than twice).  \nOutput format: Output only the paragraph with no new lines."
-    },
-    {
-      "case_number": 5,
-      "genre": "Music / MIDI-like note sequence",
-      "prompt": "Produce a sequence of 128 note events (pitch classes 0–11) where:",
-      "constraints": [
-        "pitch class 0 occurs an odd number of times",
-        "pitch class 3 occurs 3× pitch class 6",
-        "exactly 16 perfect fifth intervals occur between consecutive notes",
-        "no pitch repeats consecutively"
-      ],
-      "objective": "and keep pitch-class usage as balanced as possible.",
-      "output_format": "Output the string only",
-      "full_content": "Case 5: Music / MIDI-like note sequence  \nProduce a sequence of 128 note events (pitch classes 0–11) where:\n\n* pitch class 0 occurs an odd number of times  \n* pitch class 3 occurs 3× pitch class 6  \n* exactly 16 perfect fifth intervals occur between consecutive notes  \n* no pitch repeats consecutively\n\nObjective: and keep pitch-class usage as balanced as possible.  \nOutput format: Output the string only"
-    },
-    {
-      "case_number": 5,
-      "genre": "Graph / network construction",
-      "prompt": "Construct a simple undirected graph on 50 vertices with degree sequence constraints:",
-      "constraints": [
-        "exactly 10 vertices of degree 7",
-        "exactly 15 of degree 4",
-        "graph must be connected",
-        "triangle count exactly 20",
-        "no 4-cycles"
-      ],
-      "objective": "and minimize the maximum vertex degree subject to the above.",
-      "output_format": "give the output in the form of an binary symmetric adjacency matrix, e.g. \\[\\[1,0\\],\\[0,1\\]\\]",
-      "full_content": "Case 5: Graph / network construction  \nConstruct a simple undirected graph on 50 vertices with degree sequence constraints:\n\n* exactly 10 vertices of degree 7  \n* exactly 15 of degree 4  \n* graph must be connected  \n* triangle count exactly 20  \n* no 4-cycles\n\nObjective: and minimize the maximum vertex degree subject to the above.  \nOutput format: give the output in the form of an binary symmetric adjacency matrix, e.g. \\[\\[1,0\\],\\[0,1\\]\\]"
-    },
-    {
-      "case_number": 6,
-      "genre": "Schedule / timetabling",
-      "prompt": "Create a 14-day shift schedule for 8 workers where",
-      "constraints": [
-        "each worker works no more than 9 shifts",
-        "no one works more than 8 hours in a row",
-        "no one works more than 3 days in a row",
-        "each day has exactly one night shift",
-        "every nightshift (6pm-6am) has to be covered by 2 people simultaneously",
-        "every day shift (6am-6pm) has to be covered by 3 people simultaneously"
-      ],
-      "objective": "None",
-      "output_format": "give the output in the form of a list of tuples of (worker, start time, end time): e.g. \\[(worker 1, 8am, 4pm), (worker 2, 12pm, 8pm)\\]",
-      "full_content": "Case 6: Schedule / timetabling  \nCreate a 14-day shift schedule for 8 workers where\n\n* each worker works no more than 9 shifts  \n* no one works more than 8 hours in a row  \n* no one works more than 3 days in a row  \n* each day has exactly one night shift  \n* every nightshift (6pm-6am) has to be covered by 2 people simultaneously  \n* every day shift (6am-6pm) has to be covered by 3 people simultaneously\n\nObjective: None  \nOutput format: give the output in the form of a list of tuples of (worker, start time, end time): e.g. \\[(worker 1, 8am, 4pm), (worker 2, 12pm, 8pm)\\]"
-    },
-    {
-      "case_number": 7,
-      "genre": "Sudoku-like grid",
-      "prompt": "Generate a 9×9 Latin square partial fill with exactly 30 clues such that",
-      "constraints": [
-        "the completion is feasible",
-        "the digit 8 appears an odd number of times among clues",
-        "the digit 7 appears 2 times as often as digit 4",
-        "and clue positions are as symmetric as possible."
-      ],
-      "objective": "minimizing the number of asymmetric occurrences",
-      "output_format": "give the clues output as a dense matrix where ? marks unknown, e.g. \\[\\[?,2\\],\\[9,?\\]\\]",
-      "full_content": "Case 7: Sudoku-like grid  \nGenerate a 9×9 Latin square partial fill with exactly 30 clues such that\n\n* the completion is feasible  \n* the digit 8 appears an odd number of times among clues  \n* the digit 7 appears 2 times as often as digit 4  \n* and clue positions are as symmetric as possible.\n\nObjective: minimizing the number of asymmetric occurrences  \nOutput format: give the clues output as a dense matrix where ? marks unknown, e.g. \\[\\[?,2\\],\\[9,?\\]\\]"
-    },
-    {
-      "case_number": 8,
-      "genre": "Regular expression / language example",
-      "prompt": "Produce 200 strings over alphabet {a,b,c} such that",
-      "constraints": [
-        "exactly 73 match a given regex",
-        "none contain substring bb",
-        "the distribution of lengths is uniform from 5–14"
-      ],
-      "objective": "and minimize duplicates.",
-      "output_format": "give the output as newline separated strings",
-      "full_content": "Case 8: Regular expression / language example  \nProduce 200 strings over alphabet {a,b,c} such that \n\n* exactly 73 match a given regex  \n* none contain substring bb  \n* the distribution of lengths is uniform from 5–14\n\nObjective: and minimize duplicates.  \nOutput format: give the output as newline separated strings"
-    },
-    {
-      "case_number": 10,
-      "genre": "Dataset synthesis (CSV)",
-      "prompt": "Generate a CSV with 300 rows of (id, age, city, score) where",
-      "constraints": [
-        "ages have mean 35 and std 8 (integer)",
-        "exactly 40 rows per city for 5 cities plus 100 “Other”",
-        "scores are 0–100 with exactly 30 perfect 100s",
-        "no duplicate (age, city, score) triples",
-        "and ids are unique 8-char alphanumerics."
-      ],
-      "objective": "None",
-      "output_format": "give the output as a json",
-      "full_content": "Case 10: Dataset synthesis (CSV)  \nGenerate a CSV with 300 rows of (id, age, city, score) where \n\n* ages have mean 35 and std 8 (integer)  \n* exactly 40 rows per city for 5 cities plus 100 “Other”  \n* scores are 0–100 with exactly 30 perfect 100s  \n* no duplicate (age, city, score) triples  \n* and ids are unique 8-char alphanumerics.\n\nObjective: None  \nOutput format: give the output as a json"
-    },
-    {
-      "case_number": 11,
-      "genre": "Constrained program output",
-      "prompt": "Write a Python function that",
-      "constraints": [
-        "prints exactly 200 lines",
-        "line lengths form an arithmetic progression",
-        "exactly 50 lines contain the substring \"ERROR\"",
-        "no two identical lines",
-        "and total characters printed is exactly 20,000."
-      ],
-      "objective": null,
-      "output_format": null,
-      "full_content": "Case 11: Constrained program output  \nWrite a Python function that \n\n* prints exactly 200 lines  \n* line lengths form an arithmetic progression  \n* exactly 50 lines contain the substring \"ERROR\"  \n* no two identical lines  \n* and total characters printed is exactly 20,000."
-    },
-    {
-      "case_number": 12,
-      "genre": "Graph / network construction",
-      "prompt": "Construct a simple undirected graph on 60 vertices with constraints:",
-      "constraints": [
-        "graph must be connected",
-        "exactly 12 vertices have degree 3",
-        "exactly 18 vertices have degree 4",
-        "exactly 20 vertices have degree 5",
-        "the remaining vertices have degree 6",
-        "the graph contains exactly 30 triangles",
-        "the graph contains no 5-cycles"
-      ],
-      "objective": "minimize the number of edges (if degrees allow multiple realizations, pick one with minimum edge count consistent with the degree constraints).",
-      "output_format": "give the output in the form of an binary symmetric adjacency matrix, e.g. \\[\\[0,1\\],\\[1,0\\]\\]",
-      "full_content": "Case 12: Graph / network construction  \nConstruct a simple undirected graph on 60 vertices with constraints:\n\n* graph must be connected  \n* exactly 12 vertices have degree 3  \n* exactly 18 vertices have degree 4  \n* exactly 20 vertices have degree 5  \n* the remaining vertices have degree 6  \n* the graph contains exactly 30 triangles  \n* the graph contains no 5-cycles\n\nObjective: minimize the number of edges (if degrees allow multiple realizations, pick one with minimum edge count consistent with the degree constraints).  \nOutput format: give the output in the form of an binary symmetric adjacency matrix, e.g. \\[\\[0,1\\],\\[1,0\\]\\]"
-    },
-    {
-      "case_number": 13,
-      "genre": "Graph / network construction",
-      "prompt": "Construct a simple undirected bipartite graph with parts L and R where:",
-      "constraints": [
-        "|L| \\= 25, |R| \\= 25",
-        "every vertex in L has degree exactly 4",
-        "degrees in R are as balanced as possible (difference between max and min degree ≤ 1\\)",
-        "the graph has no 4-cycles (i.e., is C4-free)",
-        "the graph is connected"
-      ],
-      "objective": "maximize the girth (length of shortest cycle) subject to the above.",
-      "output_format": "give the output as a 25×25 binary biadjacency matrix (rows=L, cols=R)",
-      "full_content": "Case 13: Graph / network construction  \nConstruct a simple undirected bipartite graph with parts L and R where:\n\n* |L| \\= 25, |R| \\= 25  \n* every vertex in L has degree exactly 4  \n* degrees in R are as balanced as possible (difference between max and min degree ≤ 1\\)  \n* the graph has no 4-cycles (i.e., is C4-free)  \n* the graph is connected\n\nObjective: maximize the girth (length of shortest cycle) subject to the above.  \nOutput format: give the output as a 25×25 binary biadjacency matrix (rows=L, cols=R)"
-    },
-    {
-      "case_number": 14,
-      "genre": "Graph / network construction",
-      "prompt": "Construct a simple undirected graph on 40 vertices with constraints:",
-      "constraints": [
-        "graph is connected",
-        "graph is planar",
-        "exactly 8 vertices have degree 2",
-        "exactly 24 vertices have degree 3",
-        "exactly 8 vertices have degree 4",
-        "the graph contains exactly 6 triangles",
-        "and contains no K4 subgraph"
-      ],
-      "objective": "minimize the total number of triangles incident to any single vertex (spread triangles out).",
-      "output_format": "give the output in the form of an binary symmetric adjacency matrix, e.g. \\[\\[0,1\\],\\[1,0\\]\\]",
-      "full_content": "Case 14: Graph / network construction  \nConstruct a simple undirected graph on 40 vertices with constraints:\n\n* graph is connected  \n* graph is planar  \n* exactly 8 vertices have degree 2  \n* exactly 24 vertices have degree 3  \n* exactly 8 vertices have degree 4  \n* the graph contains exactly 6 triangles  \n* and contains no K4 subgraph\n\nObjective: minimize the total number of triangles incident to any single vertex (spread triangles out).  \nOutput format: give the output in the form of an binary symmetric adjacency matrix, e.g. \\[\\[0,1\\],\\[1,0\\]\\]"
-    },
-    {
-      "case_number": 15,
-      "genre": "Graph / network construction",
-      "prompt": "Construct a simple undirected graph on 50 vertices with constraints:",
-      "constraints": [
-        "graph must be connected",
-        "the graph is regular of degree 6 (6-regular)",
-        "the graph contains exactly 25 triangles",
-        "the graph contains exactly 10 induced 4-cycles",
-        "the graph has no clique of size 5",
-        "Objective: minimize the graph diameter."
-      ],
-      "objective": null,
-      "output_format": "give the output in the form of an binary symmetric adjacency matrix, e.g. \\[\\[0,1\\],\\[1,0\\]\\]",
-      "full_content": "Case 15: Graph / network construction  \nConstruct a simple undirected graph on 50 vertices with constraints:\n\n* graph must be connected  \n* the graph is regular of degree 6 (6-regular)  \n* the graph contains exactly 25 triangles  \n* the graph contains exactly 10 induced 4-cycles  \n* the graph has no clique of size 5  \n* Objective: minimize the graph diameter.\n\nOutput format: give the output in the form of an binary symmetric adjacency matrix, e.g. \\[\\[0,1\\],\\[1,0\\]\\]"
-    },
-    {
-      "case_number": 16,
-      "genre": "Graph / network construction",
-      "prompt": "Construct a simple directed graph on 30 vertices with constraints:\nno self-loops and no multi-edges",
-      "constraints": [
-        "for every vertex, out-degree \\= in-degree (Eulerian)",
-        "exactly 10 vertices have out-degree 2, exactly 10 have out-degree 3, and exactly 10 have out-degree 4",
-        "the digraph is strongly connected",
-        "the number of directed 3-cycles is exactly 12"
-      ],
-      "objective": "minimize the number of 2-cycles (pairs u→v and v→u).",
-      "output_format": "give the output as a 30×30 binary adjacency matrix (not necessarily symmetric), e.g. \\[\\[0,1\\],\\[0,0\\]\\]",
-      "full_content": "Case 16: Graph / network construction  \nConstruct a simple directed graph on 30 vertices with constraints:  \nno self-loops and no multi-edges\n\n* for every vertex, out-degree \\= in-degree (Eulerian)  \n* exactly 10 vertices have out-degree 2, exactly 10 have out-degree 3, and exactly 10 have out-degree 4  \n* the digraph is strongly connected  \n* the number of directed 3-cycles is exactly 12\n\nObjective: minimize the number of 2-cycles (pairs u→v and v→u).  \nOutput format: give the output as a 30×30 binary adjacency matrix (not necessarily symmetric), e.g. \\[\\[0,1\\],\\[0,0\\]\\]"
-    },
-    {
-      "case_number": 17,
-      "genre": "Graph / network construction",
-      "prompt": "Construct a simple undirected graph on 48 vertices with constraints:",
-      "constraints": [
-        "graph must be connected",
-        "exactly 16 vertices have degree 3",
-        "exactly 16 vertices have degree 4",
-        "exactly 16 vertices have degree 5",
-        "the graph contains exactly 24 triangles",
-        "the graph contains no induced cycle of length 4"
-      ],
-      "objective": "minimize the number of edges that lie on any triangle (make triangles share edges as little as possible).",
-      "output_format": "give the output in the form of an binary symmetric adjacency matrix, e.g. \\[\\[0,1\\],\\[1,0\\]\\]",
-      "full_content": "Case 17: Graph / network construction  \nConstruct a simple undirected graph on 48 vertices with constraints:\n\n* graph must be connected  \n* exactly 16 vertices have degree 3  \n* exactly 16 vertices have degree 4  \n* exactly 16 vertices have degree 5  \n* the graph contains exactly 24 triangles  \n* the graph contains no induced cycle of length 4\n\nObjective: minimize the number of edges that lie on any triangle (make triangles share edges as little as possible).  \nOutput format: give the output in the form of an binary symmetric adjacency matrix, e.g. \\[\\[0,1\\],\\[1,0\\]\\]"
-    },
-    {
-      "case_number": 18,
-      "genre": "Graph / network construction",
-      "prompt": "Construct a simple undirected graph on 36 vertices with constraints:",
-      "constraints": [
-        "graph must be connected",
-        "the vertex set can be partitioned into 3 equally-sized communities of 12 vertices each",
-        "each vertex has total degree exactly 6",
-        "each vertex has exactly 4 neighbors in its own community and 2 neighbors outside",
-        "the graph contains exactly 18 triangles, and every triangle must lie entirely within a single community"
-      ],
-      "objective": "minimize the number of edges between communities while keeping the graph connected.",
-      "output_format": "give the output in the form of an binary symmetric adjacency matrix, e.g. \\[\\[0,1\\],\\[1,0\\]\\]",
-      "full_content": "Case 18: Graph / network construction  \nConstruct a simple undirected graph on 36 vertices with constraints:\n\n* graph must be connected  \n* the vertex set can be partitioned into 3 equally-sized communities of 12 vertices each  \n* each vertex has total degree exactly 6  \n* each vertex has exactly 4 neighbors in its own community and 2 neighbors outside  \n* the graph contains exactly 18 triangles, and every triangle must lie entirely within a single community\n\nObjective: minimize the number of edges between communities while keeping the graph connected.  \nOutput format: give the output in the form of an binary symmetric adjacency matrix, e.g. \\[\\[0,1\\],\\[1,0\\]\\]"
-    },
-    {
-      "case_number": 19,
-      "genre": "Graph / network construction",
-      "prompt": "Construct a simple undirected graph on 50 vertices with constraints:",
-      "constraints": [
-        "graph must be connected",
-        "exactly 20 vertices have degree 2 and exactly 30 vertices have degree 5",
-        "the graph contains exactly 15 triangles",
-        "the graph contains no cycle of length 6"
-      ],
-      "objective": "maximize the number of bridges (edges whose removal disconnects the graph) subject to the constraints.",
-      "output_format": "give the output in the form of an binary symmetric adjacency matrix, e.g. \\[\\[0,1\\],\\[1,0\\]\\]",
-      "full_content": "Case 19: Graph / network construction  \nConstruct a simple undirected graph on 50 vertices with constraints:\n\n* graph must be connected  \n* exactly 20 vertices have degree 2 and exactly 30 vertices have degree 5  \n* the graph contains exactly 15 triangles  \n* the graph contains no cycle of length 6\n\nObjective: maximize the number of bridges (edges whose removal disconnects the graph) subject to the constraints.  \nOutput format: give the output in the form of an binary symmetric adjacency matrix, e.g. \\[\\[0,1\\],\\[1,0\\]\\]"
-    },
-    {
-      "case_number": 20,
-      "genre": "Graph / network construction",
-      "prompt": "Construct a simple undirected graph on 45 vertices with constraints:",
-      "constraints": [
-        "graph must be connected",
-        "the graph is chordal (every cycle of length ≥4 has a chord)",
-        "exactly 5 vertices have degree 2",
-        "exactly 25 vertices have degree 4",
-        "exactly 15 vertices have degree 6",
-        "the graph contains exactly 10 triangles"
-      ],
-      "objective": "minimize the size of the maximum clique.",
-      "output_format": "give the output in the form of an binary symmetric adjacency matrix, e.g. \\[\\[0,1\\],\\[1,0\\]\\]",
-      "full_content": "Case 20: Graph / network construction  \nConstruct a simple undirected graph on 45 vertices with constraints:\n\n* graph must be connected  \n* the graph is chordal (every cycle of length ≥4 has a chord)  \n* exactly 5 vertices have degree 2  \n* exactly 25 vertices have degree 4  \n* exactly 15 vertices have degree 6  \n* the graph contains exactly 10 triangles\n\nObjective: minimize the size of the maximum clique.  \nOutput format: give the output in the form of an binary symmetric adjacency matrix, e.g. \\[\\[0,1\\],\\[1,0\\]\\]"
-    },
-    {
-      "case_number": 21,
-      "genre": "N-Queens / constraint satisfaction",
-      "prompt": "Construct a placement of queens on an $N \\\\times N$ chessboard where:",
-      "constraints": [
-        "$N \\= 25$",
-        "exactly 25 queens are placed (one per row and one per column)",
-        "no two queens attack each other (no shared row, column, or diagonal)"
-      ],
-      "objective": "minimize the number of queens placed on border squares (row 1, row N, col 1, col N).",
-      "output_format": "give the output as a list of 25 tuples (row, col), 1-indexed, e.g. \\[(1,3),(2,5),...\\]",
-      "full_content": "Case 21: N-Queens / constraint satisfaction  \nConstruct a placement of queens on an $N \\\\times N$ chessboard where:\n\n* $N \\= 25$  \n* exactly 25 queens are placed (one per row and one per column)  \n* no two queens attack each other (no shared row, column, or diagonal)\n\nObjective: minimize the number of queens placed on border squares (row 1, row N, col 1, col N).  \nOutput format: give the output as a list of 25 tuples (row, col), 1-indexed, e.g. \\[(1,3),(2,5),...\\]"
-    },
-    {
-      "case_number": 22,
-      "genre": "N-Queens / constraint satisfaction",
-      "prompt": "Construct a placement of queens on an $N \\\\times N$ chessboard where:",
-      "constraints": [
-        "$N \\= 100$",
-        "exactly 8 queens are placed (one per row and one per column)",
-        "no two queens attack each other (no shared row, column, or diagonal)"
-      ],
-      "objective": "minimize the number of queens on dark squares (assuming (1,1) is dark).",
-      "output_format": "give the output as a list of 8 tuples (row, col), 1-indexed, e.g. \\[(1,3),(2,5),...\\]",
-      "full_content": "Case 22: N-Queens / constraint satisfaction  \nConstruct a placement of queens on an $N \\\\times N$ chessboard where:\n\n* $N \\= 100$  \n* exactly 8 queens are placed (one per row and one per column)  \n* no two queens attack each other (no shared row, column, or diagonal)\n\nObjective: minimize the number of queens on dark squares (assuming (1,1) is dark).  \nOutput format: give the output as a list of 8 tuples (row, col), 1-indexed, e.g. \\[(1,3),(2,5),...\\]"
-    },
-    {
-      "case_number": 23,
-      "genre": "N-Queens / constraint satisfaction:",
-      "prompt": "Construct a placement of queens on an $N \\\\times N$ chessboard where:",
-      "constraints": [
-        "$N \\= 14$",
-        "exactly 14 queens are placed (one per row and one per column)",
-        "no two queens attack each other (no shared row, column, or diagonal)"
-      ],
-      "objective": "minimize the maximum column index used among queens in rows 1–7 (i.e., push early queens left).",
-      "output_format": "give the output as a list of 14 tuples (row, col), 1-indexed.",
-      "full_content": "Case 23: N-Queens / constraint satisfaction:   \nConstruct a placement of queens on an $N \\\\times N$ chessboard where:\n\n* $N \\= 14$  \n* exactly 14 queens are placed (one per row and one per column)  \n* no two queens attack each other (no shared row, column, or diagonal)\n\nObjective: minimize the maximum column index used among queens in rows 1–7 (i.e., push early queens left).  \nOutput format: give the output as a list of 14 tuples (row, col), 1-indexed."
-    },
-    {
-      "case_number": 24,
-      "genre": "N-Queens / constraint satisfaction",
-      "prompt": "Construct a placement of queens on an $N \\\\times N$ chessboard where:",
-      "constraints": [
-        "$N \\= 19$",
-        "exactly 19 queens are placed (one per row and one per column)",
-        "no two queens attack each other (no shared row, column, or diagonal)"
-      ],
-      "objective": "maximize the number of queens placed in the central $9 \\\\times 9$ sub-board (rows 6–14, cols 6–14).",
-      "output_format": "give the output as a list of 19 tuples (row, col), 1-indexed.",
-      "full_content": "Case 24: N-Queens / constraint satisfaction  \nConstruct a placement of queens on an $N \\\\times N$ chessboard where:\n\n* $N \\= 19$  \n* exactly 19 queens are placed (one per row and one per column)  \n* no two queens attack each other (no shared row, column, or diagonal)\n\nObjective: maximize the number of queens placed in the central $9 \\\\times 9$ sub-board (rows 6–14, cols 6–14).  \nOutput format: give the output as a list of 19 tuples (row, col), 1-indexed."
-    },
-    {
-      "case_number": 25,
-      "genre": "N-Queens / constraint satisfaction",
-      "prompt": "Construct a placement of queens on an $N \\\\times N$ chessboard where:",
-      "constraints": [
-        "$N \\= 31$",
-        "exactly 31 queens are placed (one per row and one per column)",
-        "no two queens attack each other (no shared row, column, or diagonal)"
-      ],
-      "objective": "minimize the number of queens in columns divisible by 3\\.",
-      "output_format": "give the output as a list of 31 tuples (row, col), 1-indexed.",
-      "full_content": "Case 25: N-Queens / constraint satisfaction  \nConstruct a placement of queens on an $N \\\\times N$ chessboard where:\n\n* $N \\= 31$  \n* exactly 31 queens are placed (one per row and one per column)  \n* no two queens attack each other (no shared row, column, or diagonal)\n\nObjective: minimize the number of queens in columns divisible by 3\\.  \nOutput format: give the output as a list of 31 tuples (row, col), 1-indexed."
-    },
-    {
-      "case_number": 26,
-      "genre": "Knight’s tour / graph traversal",
-      "prompt": "Construct a knight’s tour on an $N \\\\times N$ chessboard where:",
-      "constraints": [
-        "$N \\= 8$",
-        "the tour is a sequence of exactly 64 distinct squares",
-        "each consecutive pair of squares is a legal knight move",
-        "the tour is closed (the last square is a knight move away from the first)"
-      ],
-      "objective": "minimize the number of corner squares visited in the first 16 moves.",
-      "output_format": "give the output as a list of 64 tuples (row, col), 1-indexed.",
-      "full_content": "Case 26: Knight’s tour / graph traversal  \nConstruct a knight’s tour on an $N \\\\times N$ chessboard where:\n\n* $N \\= 8$  \n* the tour is a sequence of exactly 64 distinct squares  \n* each consecutive pair of squares is a legal knight move  \n* the tour is closed (the last square is a knight move away from the first)\n\nObjective: minimize the number of corner squares visited in the first 16 moves.  \nOutput format: give the output as a list of 64 tuples (row, col), 1-indexed."
-    },
-    {
-      "case_number": 27,
-      "genre": "Rook placement / non-attacking with obstacles",
-      "prompt": "Construct a placement on an $N \\\\times N$ chessboard where:",
-      "constraints": [
-        "$N \\= 12$",
-        "exactly 18 rooks are placed",
-        "exactly 20 blocked squares are specified (you choose which squares are blocked)",
-        "rooks attack along rows/columns but attacks are stopped by blocked squares",
-        "no two rooks may attack each other given the blocked squares"
-      ],
-      "objective": "minimize the number of blocked squares that lie on the border.",
-      "output_format": "output two lists of tuples: (1) rook squares, (2) blocked squares; all 1-indexed.",
-      "full_content": "Case 27: Rook placement / non-attacking with obstacles  \nConstruct a placement on an $N \\\\times N$ chessboard where:\n\n* $N \\= 12$  \n* exactly 18 rooks are placed  \n* exactly 20 blocked squares are specified (you choose which squares are blocked)  \n* rooks attack along rows/columns but attacks are stopped by blocked squares  \n* no two rooks may attack each other given the blocked squares\n\nObjective: minimize the number of blocked squares that lie on the border.  \nOutput format: output two lists of tuples: (1) rook squares, (2) blocked squares; all 1-indexed."
-    },
-    {
-      "case_number": 28,
-      "genre": "Bishops / color-constrained non-attacking",
-      "prompt": "Construct a placement of bishops on an $N \\\\times N$ chessboard where:",
-      "constraints": [
-        "$N \\= 10$",
-        "exactly 16 bishops are placed",
-        "exactly 8 bishops are on dark squares and exactly 8 on light squares (assume (1,1) is dark)",
-        "no two bishops attack each other"
-      ],
-      "objective": "maximize the number of bishops placed within the central $4 \\\\times 4$ region (rows 4–7, cols 4–7).",
-      "output_format": "give the output as a list of 16 tuples (row, col), 1-indexed.",
-      "full_content": "Case 28: Bishops / color-constrained non-attacking  \nConstruct a placement of bishops on an $N \\\\times N$ chessboard where:\n\n* $N \\= 10$  \n* exactly 16 bishops are placed  \n* exactly 8 bishops are on dark squares and exactly 8 on light squares (assume (1,1) is dark)  \n* no two bishops attack each other\n\nObjective: maximize the number of bishops placed within the central $4 \\\\times 4$ region (rows 4–7, cols 4–7).  \nOutput format: give the output as a list of 16 tuples (row, col), 1-indexed."
-    },
-    {
-      "case_number": 29,
-      "genre": "King’s shortest path with forbidden squares",
-      "prompt": "Construct a king path on an $N \\\\times N$ chessboard where:",
-      "constraints": [
-        "$N \\= 20$",
-        "start square is (1,1) and end square is (20,20)",
-        "exactly 60 forbidden squares are specified (you choose which)",
-        "the king may move 1 step in any direction (8-neighborhood) and may not step on forbidden squares"
-      ],
-      "objective": "maximize the length of the shortest valid path from start to end (i.e., make navigation as hard as possible while still solvable).",
-      "output_format": "output the list of forbidden squares as tuples (row, col), 1-indexed.",
-      "full_content": "Case 29: King’s shortest path with forbidden squares  \nConstruct a king path on an $N \\\\times N$ chessboard where:\n\n* $N \\= 20$  \n* start square is (1,1) and end square is (20,20)  \n* exactly 60 forbidden squares are specified (you choose which)  \n* the king may move 1 step in any direction (8-neighborhood) and may not step on forbidden squares\n\nObjective: maximize the length of the shortest valid path from start to end (i.e., make navigation as hard as possible while still solvable).  \nOutput format: output the list of forbidden squares as tuples (row, col), 1-indexed."
-    },
-    {
-      "case_number": 30,
-      "genre": "Chessboard domination (queens)",
-      "prompt": "Construct a set of queen positions on an $N \\\\times N$ chessboard where:",
-      "constraints": [
-        "$N \\= 14$",
-        "queens may attack through empty squares as usual",
-        "every square on the board is either occupied by a queen or attacked by at least one queen (dominating set)",
-        "no two queens may share a square (obvious)"
-      ],
-      "objective": "minimize the number of queens used.",
-      "output_format": "give the output as a list of tuples (row, col), 1-indexed.",
-      "full_content": "Case 30: Chessboard domination (queens)  \nConstruct a set of queen positions on an $N \\\\times N$ chessboard where:\n\n* $N \\= 14$  \n* queens may attack through empty squares as usual  \n* every square on the board is either occupied by a queen or attacked by at least one queen (dominating set)  \n* no two queens may share a square (obvious)\n\nObjective: minimize the number of queens used.  \nOutput format: give the output as a list of tuples (row, col), 1-indexed."
-    },
-    {
-      "case_number": 31,
-      "genre": "Word/paragraph generation (pangrammatic lipogram)",
-      "prompt": "Write a single paragraph in English with:",
-      "constraints": [
-        "exactly 180 words",
-        "exactly 9 sentences",
-        "no letter “e” anywhere",
-        "includes every vowel (a, i, o, u) at least 12 times each",
-        "contains exactly 8 commas total",
-        "contains the word “rhythm” exactly 3 times"
-      ],
-      "objective": "minimize repeated content words (no non-stopword used more than twice).",
-      "output_format": "output only the paragraph as a single line.",
-      "full_content": "Case 31: Word/paragraph generation (pangrammatic lipogram)  \nWrite a single paragraph in English with:\n\n* exactly 180 words  \n* exactly 9 sentences  \n* no letter “e” anywhere  \n* includes every vowel (a, i, o, u) at least 12 times each  \n* contains exactly 8 commas total  \n* contains the word “rhythm” exactly 3 times \n\nObjective: minimize repeated content words (no non-stopword used more than twice).   \nOutput format: output only the paragraph as a single line."
-    },
-    {
-      "case_number": 32,
-      "genre": "Word/paragraph generation (acrostic \\+ counts)",
-      "prompt": "Write a 10-sentence paragraph where:",
-      "constraints": [
-        "sentence initials (first letter of each sentence) spell “CONSTRAINTS” (10 letters)",
-        "total length is exactly 220–240 words",
-        "exactly 35 words start with a vowel (A/E/I/O/U)",
-        "includes the bigram “th” exactly 20 times (case-insensitive)",
-        "contains no question marks"
-      ],
-      "objective": "minimize repeated words (no word appears more than 3 times).",
-      "output_format": "output only the paragraph.",
-      "full_content": "Case 32: Word/paragraph generation (acrostic \\+ counts)  \nWrite a 10-sentence paragraph where:\n\n* sentence initials (first letter of each sentence) spell “CONSTRAINTS” (10 letters)  \n* total length is exactly 220–240 words  \n* exactly 35 words start with a vowel (A/E/I/O/U)  \n* includes the bigram “th” exactly 20 times (case-insensitive)  \n* contains no question marks \n\nObjective: minimize repeated words (no word appears more than 3 times).   \nOutput format: output only the paragraph."
-    },
-    {
-      "case_number": 33,
-      "genre": "Word/paragraph generation (rhyme \\+ structure)",
-      "prompt": "Write a 3-paragraph mini-essay where:",
-      "constraints": [
-        "each paragraph has exactly 4 sentences",
-        "total word count is exactly 300 words",
-        "the last word of each sentence rhymes with the last word of the previous sentence (perfect rhyme, not slant)",
-        "includes exactly 12 semicolons in total",
-        "contains the phrase “in plain sight” exactly twice"
-      ],
-      "objective": "maximize lexical diversity (maximize the number of distinct words).",
-      "output_format": "output only the essay (paragraph breaks allowed).",
-      "full_content": "Case 33: Word/paragraph generation (rhyme \\+ structure)  \nWrite a 3-paragraph mini-essay where:\n\n* each paragraph has exactly 4 sentences  \n* total word count is exactly 300 words  \n* the last word of each sentence rhymes with the last word of the previous sentence (perfect rhyme, not slant)  \n* includes exactly 12 semicolons in total  \n* contains the phrase “in plain sight” exactly twice \n\nObjective: maximize lexical diversity (maximize the number of distinct words).   \nOutput format: output only the essay (paragraph breaks allowed)."
-    },
-    {
-      "case_number": 34,
-      "genre": "Word/paragraph generation (banned letters \\+ mandated vocabulary)",
-      "prompt": "Write a logically reasonable single paragraph with:",
-      "constraints": [
-        "exactly 200 words",
-        "no letters: “e”, “t”, or “a” anywhere",
-        "includes all of the following words exactly once each: “crypt”, “glyph”, “rhomb”, “sylph”, “nymph”, “pseudonym”",
-        "contains exactly 5 hyphenated compounds (e.g., “cold-iron”)"
-      ],
-      "objective": "None",
-      "output_format": "output only the paragraph as a single line.",
-      "full_content": "Case 34: Word/paragraph generation (banned letters \\+ mandated vocabulary)  \nWrite a logically reasonable single paragraph with:\n\n* exactly 200 words  \n* no letters: “e”, “t”, or “a” anywhere  \n* includes all of the following words exactly once each: “crypt”, “glyph”, “rhomb”, “sylph”, “nymph”, “pseudonym”  \n* contains exactly 5 hyphenated compounds (e.g., “cold-iron”) \n\nObjective: None  \nOutput format: output only the paragraph as a single line."
-    },
-    {
-      "case_number": 35,
-      "genre": "Word/paragraph generation (constraint satisfaction with quotations)",
-      "prompt": "Write a 12-sentence paragraph where:",
-      "constraints": [
-        "total word count is exactly 240",
-        "includes exactly 6 quoted spans using double quotes (\")",
-        "each quoted span is exactly 3 words long",
-        "includes exactly 18 words of length 1–2 letters total",
-        "contains no digit characters (0–9)"
-      ],
-      "objective": "minimize repeated words (no word used more than twice).",
-      "output_format": "output only the paragraph as a single line.",
-      "full_content": "Case 35: Word/paragraph generation (constraint satisfaction with quotations)  \nWrite a 12-sentence paragraph where:\n\n* total word count is exactly 240  \n* includes exactly 6 quoted spans using double quotes (\")  \n* each quoted span is exactly 3 words long  \n* includes exactly 18 words of length 1–2 letters total  \n* contains no digit characters (0–9) \n\nObjective: minimize repeated words (no word used more than twice).   \nOutput format: output only the paragraph as a single line."
-    },
-    {
-      "case_number": 36,
-      "genre": "Word/paragraph generation (controlled vocabulary)",
-      "prompt": "Write a 260-word short essay where:",
-      "constraints": [
-        "only the 250 most common English words may be used, plus these allowed extras: {algorithm, entropy, bias, signal, noise, model}",
-        "exactly 14 sentences",
-        "includes “algorithm” exactly 6 times",
-        "includes “model” exactly 4 times",
-        "contains no commas"
-      ],
-      "objective": "make the essay clearly explain a technical idea despite vocabulary limits.",
-      "output_format": "output only the essay.",
-      "full_content": "Case 36: Word/paragraph generation (controlled vocabulary)  \nWrite a 260-word short essay where:\n\n* only the 250 most common English words may be used, plus these allowed extras: {algorithm, entropy, bias, signal, noise, model}  \n* exactly 14 sentences  \n* includes “algorithm” exactly 6 times  \n* includes “model” exactly 4 times  \n* contains no commas \n\nObjective: make the essay clearly explain a technical idea despite vocabulary limits.   \nOutput format: output only the essay."
-    },
-    {
-      "case_number": 37,
-      "genre": "Word/paragraph generation (alliteration \\+ syllable constraints)",
-      "prompt": "Write a 2-paragraph piece where:",
-      "constraints": [
-        "each paragraph has exactly 5 sentences",
-        "every sentence contains at least 6 words starting with the letter “s”",
-        "total word count is exactly 280",
-        "exactly 30 words are monosyllabic (use standard English approximations)"
-      ],
-      "objective": "minimize repeated “s”-words (each specific “s”-starting word used at most twice).",
-      "output_format": "output only the text.",
-      "full_content": "Case 37: Word/paragraph generation (alliteration \\+ syllable constraints)  \nWrite a 2-paragraph piece where:\n\n* each paragraph has exactly 5 sentences  \n* every sentence contains at least 6 words starting with the letter “s”  \n* total word count is exactly 280  \n* exactly 30 words are monosyllabic (use standard English approximations) \n\nObjective: minimize repeated “s”-words (each specific “s”-starting word used at most twice).   \nOutput format: output only the text."
-    },
-    {
-      "case_number": 38,
-      "genre": "Word/paragraph generation (reading level \\+ keyword distribution)",
-      "prompt": "Write a 5-paragraph essay where:",
-      "constraints": [
-        "each paragraph has exactly 3 sentences",
-        "total length is exactly 450–470 words",
-        "Flesch–Kincaid grade level between 6.0 and 7.0 (approximate)",
-        "includes the word “because” exactly 12 times",
-        "includes the word “however” exactly 5 times"
-      ],
-      "objective": "None",
-      "output_format": "output only the essay (paragraph breaks allowed).",
-      "full_content": "Case 38: Word/paragraph generation (reading level \\+ keyword distribution)  \nWrite a 5-paragraph essay where:\n\n* each paragraph has exactly 3 sentences  \n* total length is exactly 450–470 words  \n* Flesch–Kincaid grade level between 6.0 and 7.0 (approximate)  \n* includes the word “because” exactly 12 times  \n* includes the word “however” exactly 5 times \n\nObjective: None  \nOutput format: output only the essay (paragraph breaks allowed)."
-    },
-    {
-      "case_number": 39,
-      "genre": "Word/paragraph generation (palindrome-like sentence constraint)",
-      "prompt": "Write a 9-sentence paragraph where:",
-      "constraints": [
-        "total word count is exactly 180",
-        "sentence 1 and sentence 9 are identical",
-        "sentence 2 and sentence 8 are identical",
-        "sentence 3 and sentence 7 are identical",
-        "sentence 4 and sentence 6 are identical",
-        "sentence 5 is unique",
-        "contains exactly 10 occurrences of the substring “ing” (case-insensitive) across the whole text"
-      ],
-      "objective": "None",
-      "output_format": "output only the paragraph.",
-      "full_content": "Case 39: Word/paragraph generation (palindrome-like sentence constraint)  \nWrite a 9-sentence paragraph where:\n\n* total word count is exactly 180  \n* sentence 1 and sentence 9 are identical  \n* sentence 2 and sentence 8 are identical  \n* sentence 3 and sentence 7 are identical  \n* sentence 4 and sentence 6 are identical  \n* sentence 5 is unique  \n* contains exactly 10 occurrences of the substring “ing” (case-insensitive) across the whole text \n\nObjective: None  \nOutput format: output only the paragraph."
-    },
-    {
-      "case_number": 40,
-      "genre": "Word/paragraph generation (anagrammatic constraint)",
-      "prompt": "Write a single paragraph with:",
-      "constraints": [
-        "exactly 210 words",
-        "every sentence must be an anagram (letter multiset) of every other sentence (so all sentences contain exactly the same letters in total, ignoring spaces/punctuation)",
-        "exactly 7 sentences",
-        "may use punctuation, but no digits"
-      ],
-      "objective": "None",
-      "output_format": "output only the paragraph.",
-      "full_content": "Case 40: Word/paragraph generation (anagrammatic constraint)  \nWrite a single paragraph with:\n\n* exactly 210 words  \n* every sentence must be an anagram (letter multiset) of every other sentence (so all sentences contain exactly the same letters in total, ignoring spaces/punctuation)  \n* exactly 7 sentences  \n* may use punctuation, but no digits \n\nObjective: None  \nOutput format: output only the paragraph."
-    }
-  ],
-  "meta": {
-    "count": 40
-  }
+    "cases" : [
+{
+    "case_number": 1,
+    "genre": "Resume Generation",
+    "prompt": "Generate a work experience section for a software engineer resume",
+    "constraints": [
+        "Must contain exactly 3 bullet points",
+        "Each bullet point must start with an action verb",
+        "Must mention at least 2 programming languages",
+        "Total word count must be between 50-80 words",
+        "Must include at least one quantifiable achievement (number/percentage)",
+        "No bullet point should exceed 25 words"
+    ],
+    "objective": "None",
+    "output_format": "Output only the work experience text with bullet points",
+    "full_content": "Case 1: Resume Generation\nGenerate a work experience section for a software engineer resume\n\n* Must contain exactly 3 bullet points\n* Each bullet point must start with an action verb\n* Must mention at least 2 programming languages\n* Total word count must be between 50-80 words\n* Must include at least one quantifiable achievement (number/percentage)\n* No bullet point should exceed 25 words\n\nOutput format: Output only the work experience text with bullet points"
+}
+,
+
+
+{
+    "case_number": 2,
+    "genre": "Robot Task Planning",
+    "prompt": "Generate a sequence of actions for a robot to clean a kitchen",
+    "constraints": [
+        "Must contain exactly 24 action steps",
+        "The third and the sixth step should be the same except for one word",
+        "Must include 'perform safety check' at least twice",
+        "The word 'kitchen' must appear exactly 3 times",
+        "Must end with 'return to base'",
+        "No step should contain more than 8 words"
+    ],
+    "objective": "None",
+    "output_format": "Output only the action sequence, one step per line",
+    "full_content": "Case 2: Robot Task Planning\nGenerate a sequence of actions for a robot to clean a kitchen\n\n* Must contain exactly 24 action steps\n* The third and the sixth step should be the same except for one word\n* Must include 'perform safety check' at least twice\n* The word 'kitchen' must appear exactly 3 times\n* Must end with 'return to base'\n* No step should contain more than 8 words\n\nOutput format: Output only the action sequence, one step per line"
+}
+,
+
+
+{
+    "case_number": 3,
+    "genre": "Story Generation",
+    "prompt": "Generate a children's story about friendship",
+    "constraints": [
+        "Must be between 150-200 words",
+        "The word 'friend' must appear at least 4 times",
+        "Must include exactly 2 animal characters",
+        "Story must have exactly 3 paragraphs",
+        "Must end with the word 'together'",
+        "No sentence should exceed 15 words"
+    ],
+    "objective": "None",
+    "output_format": "Output only the story text with paragraph breaks",
+    "full_content": "Case 3: Story Generation\nGenerate a children's story about friendship\n\n* Must be between 150-200 words\n* The word 'friend' must appear at least 4 times\n* Must include exactly 2 animal characters\n* Story must have exactly 3 paragraphs\n* Must end with the word 'together'\n* No sentence should exceed 15 words\n\nOutput format: Output only the story text with paragraph breaks"
+}
+,
+
+
+{
+    "case_number": 4,
+    "genre": "Social Media Content",
+    "prompt": "Generate a LinkedIn post about career growth",
+    "constraints": [
+        "Must be exactly 280 characters or fewer",
+        "Must include exactly 2 hashtags",
+        "Must contain the phrase 'professional development'",
+        "Must ask exactly one question",
+        "Cannot use exclamation marks",
+        "Must mention a specific skill or technology"
+    ],
+    "objective": "None",
+    "output_format": "Output only the social media post text",
+    "full_content": "Case 4: Social Media Content\nGenerate a LinkedIn post about career growth\n\n* Must be exactly 280 characters or fewer\n* Must include exactly 2 hashtags\n* Must contain the phrase 'professional development'\n* Must ask exactly one question\n* Cannot use exclamation marks\n* Must mention a specific skill or technology\n\nOutput format: Output only the social media post text"
+}
+,
+
+{
+    "case_number": 5,
+    "genre": "Code Generation",
+    "prompt": "Generate a Python function to calculate fibonacci numbers",
+    "constraints": [
+        "Function must be named 'fibonacci'",
+        "Must include exactly one parameter",
+        "Must have a docstring",
+        "Function body must be no more than 10 lines",
+        "Must include error handling for negative inputs",
+        "Must use recursion"
+    ],
+    "objective": "None",
+    "output_format": "Output only the Python function code",
+    "full_content": "Case 5: Code Generation\nGenerate a Python function to calculate fibonacci numbers\n\n* Function must be named 'fibonacci'\n* Must include exactly one parameter\n* Must have a docstring\n* Function body must be no more than 10 lines\n* Must include error handling for negative inputs\n* Must use recursion\n\nOutput format: Output only the Python function code"
+}
+
+,
+
+{
+    "case_number": 6,
+    "genre": "Strategy Generation",
+    "prompt": "Generate a study plan for learning a new programming language",
+    "constraints": [
+        "Must include exactly 5 phases",
+        "Each phase must have a time estimate",
+        "Must mention 'practice' at least 3 times",
+        "Total plan duration must be 4-6 weeks",
+        "Must include at least one project-based milestone",
+        "Each phase description must be 15-30 words"
+    ],
+    "objective": "None",
+    "output_format": "Output only the study plan with numbered phases",
+    "full_content": "Case 6: Strategy Generation\nGenerate a study plan for learning a new programming language\n\n* Must include exactly 5 phases\n* Each phase must have a time estimate\n* Must mention 'practice' at least 3 times\n* Total plan duration must be 4-6 weeks\n* Must include at least one project-based milestone\n* Each phase description must be 15-30 words\n\nOutput format: Output only the study plan with numbered phases"
+}
+
+,
+
+{
+    "case_number": 7,
+    "genre": "Product Description",
+    "prompt": "Generate a description for a smart home device",
+    "constraints": [
+        "Must be between 100-150 words",
+        "Must mention exactly 3 key features",
+        "Must include the words 'innovative' and 'convenient'",
+        "Must contain exactly one call-to-action sentence",
+        "Cannot use the word 'amazing' or 'incredible'",
+        "Must mention compatibility with at least 2 platforms"
+    ],
+    "objective": "None",
+    "output_format": "Output only the product description text",
+    "full_content": "Case 7: Product Description\nGenerate a description for a smart home device\n\n* Must be between 100-150 words\n* Must mention exactly 3 key features\n* Must include the words 'innovative' and 'convenient'\n* Must contain exactly one call-to-action sentence\n* Cannot use the word 'amazing' or 'incredible'\n* Must mention compatibility with at least 2 platforms\n\nOutput format: Output only the product description text"
+}
+
+
+,
+{
+    "case_number": 8,
+    "genre": "Email Template",
+    "prompt": "Generate a professional follow-up email after a job interview",
+    "constraints": [
+        "Must include a subject line",
+        "Email body must be 80-120 words",
+        "Must thank the interviewer by name (use placeholder '[NAME]')",
+        "Must mention exactly one specific topic discussed in interview",
+        "Must include exactly one question about next steps",
+        "Must end with a professional closing"
+    ],
+    "objective": "None",
+    "output_format": "Output the complete email with subject line and body",
+    "full_content": "Case 8: Email Template\nGenerate a professional follow-up email after a job interview\n\n* Must include a subject line\n* Email body must be 80-120 words\n* Must thank the interviewer by name (use placeholder '[NAME]')\n* Must mention exactly one specific topic discussed in interview\n* Must include exactly one question about next steps\n* Must end with a professional closing\n\nOutput format: Output the complete email with subject line and body"
+}
+
+,
+
+{
+    "case_number": 9,
+    "genre": "Recipe Instructions",
+    "prompt": "Generate cooking instructions for a simple pasta dish",
+    "constraints": [
+        "Must have exactly 6 steps",
+        "Each step must start with an action verb",
+        "Must mention cooking time at least twice",
+        "Must include exactly 3 ingredients in the instructions",
+        "Step 1 must involve water",
+        "Final step must mention serving or presentation"
+    ],
+    "objective": "None",
+    "output_format": "Output only the numbered cooking steps",
+    "full_content": "Case 9: Recipe Instructions\nGenerate cooking instructions for a simple pasta dish\n\n* Must have exactly 6 steps\n* Each step must start with an action verb\n* Must mention cooking time at least twice\n* Must include exactly 3 ingredients in the instructions\n* Step 1 must involve water\n* Final step must mention serving or presentation\n\nOutput format: Output only the numbered cooking steps"
+}
+,
+{
+    "case_number": 10,
+    "genre": "Game Strategy",
+    "prompt": "Generate a strategy guide for the opening moves in chess",
+    "constraints": [
+        "Must mention exactly 4 chess pieces by name",
+        "Must be between 120-180 words",
+        "Must include the word 'control' at least 3 times",
+        "Must mention both 'center' and 'development'",
+        "Must provide exactly 3 specific opening principles",
+        "Cannot mention specific opening names (e.g., 'Sicilian Defense')"
+    ],
+    "objective": "None",
+    "output_format": "Output only the strategy guide text",
+    "full_content": "Case 10: Game Strategy\nGenerate a strategy guide for the opening moves in chess\n\n* Must mention exactly 4 chess pieces by name\n* Must be between 120-180 words\n* Must include the word 'control' at least 3 times\n* Must mention both 'center' and 'development'\n* Must provide exactly 3 specific opening principles\n* Cannot mention specific opening names (e.g., 'Sicilian Defense')\n\nOutput format: Output only the strategy guide text"
+}], 
+"meta": {
+    "count": 10
+  } 
+
 }
