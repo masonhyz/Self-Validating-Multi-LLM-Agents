@@ -29,15 +29,7 @@ def _result_details(result: Tuple) -> Dict:
     message = result[2] if len(result) > 2 else "unknown"
     return {
         "passed": [],
-        "failed": [
-            {
-                "constraint_index": -1,
-                "constraint": "verifier contract",
-                "reason": f"Verifier did not return a valid 4-tuple with details dict: {message}",
-                "expected": "4-tuple (bool, float, str, dict) with keys passed/failed/num_passed/num_failed",
-                "observed": repr(result),
-            }
-        ],
+        "failed": [f"verifier contract error: {message}"],
         "num_passed": 0,
         "num_failed": 1,
     }
@@ -204,7 +196,7 @@ class SelfValidatingPipeline:
             json.dump(data, f, indent=2, ensure_ascii=False)
         with open("outputs/final/latest_output.txt", "w", encoding="utf-8") as f:
             f.write(output)
-        print(f"\nResults saved to {filename}")
+        print(f"\n  Results saved → {filename}")
 
     # -------------------------------------------------------------------------
     # LLM phases
@@ -250,23 +242,12 @@ class SelfValidatingPipeline:
         details = _result_details(result)
         passed  = details.get("passed", [])
         failed  = details.get("failed", [])
+        excerpt = output[:800] + ("..." if len(output) > 800 else "")
 
-        diag_lines = []
-        if passed:
-            diag_lines.append("ALREADY SATISFIED:")
-            diag_lines.extend(f"  ✓ {p}" for p in passed)
-        if failed:
-            diag_lines.append("VIOLATED:")
-            for entry in failed:
-                diag_lines.append(f"  ✗ [{entry.get('constraint', '?')}]")
-                diag_lines.append(f"      reason:   {entry.get('reason', '?')}")
-                diag_lines.append(f"      expected: {entry.get('expected', '?')}")
-                diag_lines.append(f"      observed: {entry.get('observed', '?')}")
-
-        excerpt      = output[:800] + ("..." if len(output) > 800 else "")
         critic_input = collapse_newlines(CRITIC_PROMPT_TEMPLATE.format(
-            excerpt     = excerpt,
-            diagnostics = "\n".join(diag_lines),
+            excerpt = excerpt,
+            passed  = ", ".join(passed) if passed else "none",
+            failed  = ", ".join(failed) if failed else "none",
         ))
 
         try:
@@ -275,55 +256,34 @@ class SelfValidatingPipeline:
                     llm.chat(CRITIC_MODEL, messages=[{"role": "user", "content": critic_input}])
                 )
         except Exception as e:
-            print(f"[critic] LLM call failed ({e}), falling back to formatted feedback")
+            print(f"  [!] Critic LLM failed ({e}), using fallback feedback")
             return self._format_feedback(output, result)
 
-        passed_block = ""
-        if passed:
-            passed_block = (
-                "Constraints already satisfied (DO NOT break these):\n"
-                + "\n".join(f"  ✓ {p}" for p in passed)
-                + "\n\n"
-            )
-
+        passed_note = (
+            f"Already passing (do not break): {', '.join(passed)}\n\n" if passed else ""
+        )
         return collapse_newlines(
             "Your previous answer failed verification.\n\n"
-            + passed_block
-            + "A repair advisor has analysed the failures and produced the following instructions.\n"
-            "Follow them exactly:\n\n"
+            + passed_note
+            + "Repair instructions:\n\n"
             + suggestions
-            + "\n\n"
-            f"Your previous output (for reference):\n{excerpt}\n\n"
-            "Now produce the corrected answer. "
-            "Output ONLY the final answer string — no explanation, no code fences."
         )
 
     def _format_feedback(self, output: str, result: Tuple) -> str:
         """Fallback: build a repair prompt directly from verifier diagnostics."""
         details = _result_details(result)
+        passed  = details.get("passed", [])
+        failed  = details.get("failed", [])
         lines   = ["Your previous answer failed verification.", ""]
-
-        passed = details.get("passed", [])
         if passed:
-            lines.append("Constraints you already satisfy — DO NOT break these:")
-            lines.extend(f"  ✓ {p}" for p in passed)
-            lines.append("")
-
-        failed = details.get("failed", [])
+            lines.append(f"Passing (do not break): {', '.join(passed)}")
         if failed:
-            lines.append("Constraints you must fix:")
-            for entry in failed:
-                lines.append(f"  ✗ [{entry.get('constraint', '?')}]")
-                lines.append(f"      Reason:   {entry.get('reason', '?')}")
-                lines.append(f"      Expected: {entry.get('expected', '?')}")
-                lines.append(f"      Observed: {entry.get('observed', '?')}")
-            lines.append("")
-
-        lines.append(
-            "Repair your previous answer to fix ONLY the failing constraints above. "
-            "Preserve everything that already passes. "
-            "Output ONLY the corrected final answer string — no explanation, no code fences."
-        )
+            lines.append(f"Violated: {', '.join(failed)}")
+        lines += [
+            "",
+            "Fix ONLY the violated constraints. Preserve everything that already passes. "
+            "Output ONLY the corrected final answer string — no explanation, no code fences.",
+        ]
         return collapse_newlines("\n".join(lines))
 
     # -------------------------------------------------------------------------
@@ -333,20 +293,27 @@ class SelfValidatingPipeline:
     def run(self, problem_file: str) -> Tuple[Optional[str], Optional[Tuple]]:
         problem_data = self.load_problem(problem_file)
 
+        width = 56
         # Phase 1: verifier
         if self.reuse_verifier:
-            print("=== Phase 1: Reusing existing verifier ===")
+            print(f"\n┌{'─'*width}┐")
+            print(f"│{'Phase 1: Reusing Existing Verifier':^{width}}│")
+            print(f"└{'─'*width}┘")
             with open(VERIFIER_PATH, "r", encoding="utf-8") as f:
                 verifier_code = f.read()
             self.verifier = _load_verifier_module(VERIFIER_PATH)
         else:
-            print("=== Phase 1: Generating Verifier ===")
+            print(f"\n┌{'─'*width}┐")
+            print(f"│{'Phase 1: Generating Verifier':^{width}}│")
+            print(f"└{'─'*width}┘")
             verifier_code = self._generate_verifier(problem_data)
             self.verifier = self._load_verifier(verifier_code)
-            print("✓ Verifier generated")
+            print("  ✓ Verifier ready")
 
         # Phase 2: iterative output generation
-        print("\n=== Phase 2: Generating Outputs ===")
+        print(f"\n┌{'─'*width}┐")
+        print(f"│{'Phase 2: Iterative Output Generation':^{width}}│")
+        print(f"└{'─'*width}┘")
         self.messages = [
             SYSTEM_MSG,
             {
@@ -363,12 +330,16 @@ class SelfValidatingPipeline:
         last_result: Optional[Tuple] = None
 
         for iteration in range(self.max_iterations):
-            print(f"--- Iteration {iteration + 1} ---")
+            print(f"\n  [{iteration + 1}/{self.max_iterations}] Generating output...", end=" ", flush=True)
 
             try:
                 with timeout(1000):
+                    # if iteration > 0:
+                    #     print("Previous answer:\n", self.messages[2]["content"], "\n\n")
+                    #     print("Feedback:\n", self.messages[3]["content"], "\n\n")
                     content = llm.chat(OUTPUT_MODEL, messages=self.messages)
             except TimeoutError:
+                print("TIMEOUT")
                 return (None, None)
 
             self.messages.append({"role": "assistant", "content": content})
@@ -379,25 +350,31 @@ class SelfValidatingPipeline:
             last_result = result
             is_valid, score, message = result[0], result[1], result[2]
 
-            print(f"OUTPUT: {output}")
-            print(f"valid={is_valid}  score={score}  message={message}")
+            details = _result_details(result)
+            total   = details["num_passed"] + details["num_failed"]
+            status  = "✓ PASS" if is_valid else "✗ FAIL"
+            print(f"{status}  score={score:.2f}  ({details['num_passed']}/{total} constraints passed)")
 
             self._save_iteration(iteration + 1, output, result)
 
             if is_valid:
-                print("\n✓ All constraints satisfied!")
+                print(f"\n  All constraints satisfied after {iteration + 1} iteration(s).")
                 self._save_final(problem_data, output, result, verifier_code, success=True)
                 return output, result
 
-            print("  [critic] generating repair suggestions...")
+            if details["failed"]:
+                print(f"  Violated: {', '.join(details['failed'])}")
+            print("  Generating repair instructions...", end=" ", flush=True)
             feedback = self._generate_repair_suggestions(output, result)
+            print("done")
             self._log_iteration(iteration + 1, output, result, feedback)
             self.messages.append({"role": "user", "content": feedback})
 
             # Keep only [system, original problem, latest assistant, latest feedback]
             self.messages = self.messages[:2] + self.messages[-2:]
 
-        print("\n✗ Max iterations reached without satisfying all constraints")
+
+        print(f"\n  Max iterations ({self.max_iterations}) reached — constraints not fully satisfied.")
         self._save_final(problem_data, last_output, last_result, verifier_code, success=False)
         return last_output, last_result
 
@@ -407,9 +384,9 @@ if __name__ == "__main__":
         max_iterations=10,
         reuse_verifier=False,
     )
-    output, result = pipeline.run("cases/case3.json")
+    output, result = pipeline.run("cases/case1.json")
 
-    print("\n" + "=" * 50)
+    print("\n" + "─" * 58)
     print("FINAL OUTPUT")
-    print("=" * 50)
+    print("─" * 58)
     print(output)
